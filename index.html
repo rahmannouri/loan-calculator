@@ -176,7 +176,7 @@
     <h1>فرم محاسبه تسهیلات</h1>
     <span class="ref">v2</span>
   </div>
-  <p class="desc">طرح را انتخاب کنید، مبلغ سپرده را وارد کنید تا سقف تسهیلات محاسبه شود.</p>
+  <p class="desc">طرح را انتخاب کنید، مشخصات سپرده را وارد کنید تا سقف تسهیلات محاسبه شود.</p>
 </header>
 
 <div class="wrap">
@@ -515,7 +515,7 @@ function renderForm(){
     body.innerHTML = html;
     bindGroupedAmountInput('amountInput', v=>{ state.amount=v; document.getElementById('amountWords').textContent=amountToWords(v); renderResults(); });
     bindChipRow('pkgRow', v=>{ state.pkg=v; renderForm(); renderResults(); });
-    bindChipRow('repayRow', v=>{ state.repayDur=Number(v); renderResults(); });
+    bindChipRow('repayRow', v=>{ state.repayDur=Number(v); renderForm(); renderResults(); });
     return;
   }
 
@@ -550,7 +550,7 @@ function renderForm(){
     bindAmountInput('coefInput', v=>{ state.coef=v||0; renderResults(); });
     bindAmountInput('gapInput', v=>{ state.gap=v||1; renderResults(); });
     bindChipRow('accTypeRow', v=>{ state.accountType=v; renderForm(); renderResults(); });
-    bindChipRow('durRow', v=>{ state.duration=Number(v); renderResults(); });
+    bindChipRow('durRow', v=>{ state.duration=Number(v); renderForm(); renderResults(); });
     return;
   }
 
@@ -573,7 +573,7 @@ function renderForm(){
     body.innerHTML = html;
     bindGroupedAmountInput('amountInput', v=>{ state.amount=v; document.getElementById('amountWords').textContent=amountToWords(v); renderResults(); });
     bindChipRow('accTypeRow', v=>{ state.accountType=v; renderForm(); renderResults(); });
-    bindChipRow('durRow', v=>{ state.duration=Number(v); renderResults(); });
+    bindChipRow('durRow', v=>{ state.duration=Number(v); renderForm(); renderResults(); });
     return;
   }
 
@@ -613,7 +613,7 @@ function renderForm(){
   const accRow = document.getElementById('accTypeRow');
   if(accRow) bindChipRow('accTypeRow', v=>{ state.accountType=v; renderForm(); renderResults(); });
   const durRow = document.getElementById('durRow');
-  if(durRow) bindChipRow('durRow', v=>{ state.duration=Number(v); renderResults(); });
+  if(durRow) bindChipRow('durRow', v=>{ state.duration=Number(v); renderForm(); renderResults(); });
   const durSelect = document.getElementById('durSelect');
   if(durSelect) durSelect.addEventListener('change', e=>{ state.duration=Number(e.target.value); renderResults(); });
 }
