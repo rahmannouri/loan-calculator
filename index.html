@@ -295,7 +295,7 @@
     left:50%;
     bottom:max(14px, env(safe-area-inset-bottom));
     transform:translateX(-50%);
-    width:min(360px, calc(100% - 28px));
+    width:min(430px, calc(100% - 20px));
     background:#fff;
     border-radius:28px;
     box-shadow:0 10px 32px rgba(49,91,125,0.18), 0 2px 8px rgba(49,91,125,0.08);
@@ -357,6 +357,48 @@
     transform:scale(0.96);
   }
 
+  /* Mobile top header / safe area */
+  header.top{
+    padding-top:max(26px, calc(26px + env(safe-area-inset-top)));
+  }
+  @media (max-width:560px){
+    .wrap{padding-top:14px;}
+    header.top{border-radius:0 0 20px 20px;}
+  }
+
+  /* Themes */
+  .theme-list{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+  .theme-option{
+    width:100%; display:flex; align-items:center; gap:12px;
+    border:1.5px solid var(--line); background:var(--paper-2);
+    color:var(--navy-3); border-radius:13px; padding:12px 14px;
+    font-family:inherit; font-weight:800; font-size:13px; cursor:pointer;
+    text-align:right; transition:.15s;
+  }
+  .theme-option.active{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-2);}
+  .theme-preview{width:34px;height:34px;border-radius:10px;flex-shrink:0;border:1px solid rgba(0,0,0,.08);}
+  .fresh-preview{background:linear-gradient(135deg,#B89AF7,#6D5CE7);}
+  .light-preview{background:linear-gradient(135deg,#8CCBFA,#4A91C9);}
+  .dark-preview{background:linear-gradient(135deg,#303846,#11151C);}
+
+  body.theme-fresh{
+    --navy:#6755D8; --navy-2:#8878E5; --navy-3:#5144A8;
+    --accent:#6D5CE7; --accent-2:#EEEAFE; --paper:#D9D2FF;
+    --line:#D7D0F7; --line-2:#BFB6EC; --muted:#655E82;
+    --note-bg:#F4F1FF; --note-line:#D7D0F7;
+  }
+  body.theme-dark{
+    --navy:#D9E5F2; --navy-2:#AFC4D8; --navy-3:#C9D7E5;
+    --accent:#76C1FF; --accent-2:#24384B; --paper:#10151B;
+    --paper-2:#182029; --line:#2C3A47; --line-2:#3A4B5A;
+    --muted:#91A5B7; --note-bg:#202D38; --note-line:#344654;
+    --danger:#FF7A8A;
+  }
+  body.theme-dark select.native{background-color:#202A33;color:var(--navy-3);}
+  body.theme-dark .contact-item,
+  body.theme-dark .static-text-block{background:#1D2730;}
+  body.theme-dark .bottom-nav{background:#182029;}
+
   .about-body{line-height:2.1; font-size:13.5px; color:var(--navy-3);}
   .about-body h3{margin:18px 0 6px; font-size:14px; color:var(--navy); font-weight:800;}
   .about-body h3:first-child{margin-top:0;}
@@ -407,6 +449,14 @@
 </head>
 <body>
 
+<header class="top" id="appHeader">
+  <div class="row">
+    <h1 id="pageTitle">فرم محاسبه تسهیلات</h1>
+    <span class="ref" dir="ltr">v2.6</span>
+  </div>
+  <p class="desc">محاسبه سریع و ساده تسهیلات و اقساط</p>
+</header>
+
 <div class="wrap">
 
   <!-- Calculator view -->
@@ -438,10 +488,7 @@
         <p>مبالغ به ریال هستند. نتایج محاسباتی صرفاً جنبه اطلاع‌رسانی دارند و تصمیم نهایی بر اساس ضوابط شعبه و مصوبات مربوطه است.</p>
 
         <h3>نسخه</h3>
-        <p>نسخه ۲.۵</p>
-
-        <h3>تهیه‌کننده</h3>
-        <p>عبدالرحمان نوری</p>
+        <p>نسخه ۲.۶</p>
 
         <h3>راه‌های ارتباطی</h3>
         <div class="contact-list">
@@ -465,6 +512,30 @@
               <span class="contact-val" dir="ltr">@Rahman_Nouri</span>
             </span>
           </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Settings view -->
+  <div id="viewSettings" style="display:none;">
+    <section class="panel">
+      <div class="panel-head"><span class="idx">⚙</span>تنظیمات</div>
+      <div class="panel-body about-body">
+        <h3>انتخاب تم</h3>
+        <div class="theme-list">
+          <button type="button" class="theme-option" data-theme="fresh">
+            <span class="theme-preview fresh-preview"></span>
+            <span class="theme-name">رنگ جدید</span>
+          </button>
+          <button type="button" class="theme-option" data-theme="light">
+            <span class="theme-preview light-preview"></span>
+            <span class="theme-name">روشن</span>
+          </button>
+          <button type="button" class="theme-option" data-theme="dark">
+            <span class="theme-preview dark-preview"></span>
+            <span class="theme-name">تاریک</span>
+          </button>
         </div>
       </div>
     </section>
@@ -497,6 +568,15 @@
       </svg>
     </span>
     <span>درباره</span>
+  </button>
+  <button type="button" class="bn-item" data-view="settings" id="bnSettings">
+    <span class="bn-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.7 1.7-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V22h-2.4v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L8 19l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H6.7v-2.4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L8 10.6l1.7-1.7.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V7h2.4v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.7 1.7-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1v2.4h-.1a1.7 1.7 0 0 0-1.6 1z"/>
+      </svg>
+    </span>
+    <span>تنظیمات</span>
   </button>
   <button type="button" class="bn-item danger" id="bnExit" aria-label="خروج">
     <span class="bn-ico" aria-hidden="true">
@@ -1076,9 +1156,10 @@ function setView(view){
   state.view = view;
   const isCalc = view === 'calc';
   document.getElementById('viewCalc').style.display = isCalc ? '' : 'none';
-  document.getElementById('viewAbout').style.display = isCalc ? 'none' : '';
+  document.getElementById('viewAbout').style.display = view === 'about' ? '' : 'none';
+  document.getElementById('viewSettings').style.display = view === 'settings' ? '' : 'none';
   const titleEl = document.getElementById('pageTitle');
-  if (titleEl) titleEl.textContent = isCalc ? 'فرم محاسبه تسهیلات' : 'درباره برنامه';
+  if (titleEl) titleEl.textContent = isCalc ? 'فرم محاسبه تسهیلات' : (view === 'settings' ? 'تنظیمات' : 'درباره برنامه');
   document.querySelectorAll('.bottom-nav .bn-item[data-view]').forEach(btn=>{
     btn.classList.toggle('active', btn.dataset.view === view);
   });
@@ -1144,9 +1225,29 @@ function bindBottomNav(){
 window.handleNativeBack = handleNativeBack;
 window.exitApp = exitApp;
 
+/* ---------------- THEMES ---------------- */
+function applyTheme(theme){
+  document.body.classList.remove('theme-fresh','theme-dark');
+  if(theme === 'fresh') document.body.classList.add('theme-fresh');
+  if(theme === 'dark') document.body.classList.add('theme-dark');
+  try { localStorage.setItem('loanAppTheme', theme); } catch(e) {}
+  document.querySelectorAll('.theme-option').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.theme === theme);
+  });
+}
+function setupThemes(){
+  let theme='light';
+  try { theme=localStorage.getItem('loanAppTheme') || 'light'; } catch(e) {}
+  applyTheme(theme);
+  document.querySelectorAll('.theme-option').forEach(btn=>{
+    btn.addEventListener('click', ()=>applyTheme(btn.dataset.theme));
+  });
+}
+
 function bootApp(){
   bindBottomNav();
   setupHardwareBack();
+  setupThemes();
   renderAll();
 }
 if (document.readyState === 'loading') {
