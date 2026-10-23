@@ -686,7 +686,7 @@
       width:auto !important; height:auto !important;
       min-height:0 !important; overflow:visible !important;
     }
-    header.top, .side-nav, .nav-overlay, .burger, .print-bar,
+    header.top, .side-nav, .nav-overlay, .burger, .print-bar, .share-bar, .share-overlay,
     #viewCalc, #viewAbout, #viewSettings, .app-footer{display:none !important;}
     body > *:not(.wrap){display:none !important;}
     .wrap{margin:0 !important; padding:0 !important; max-width:none !important; display:block !important; width:100% !important;}
@@ -762,6 +762,111 @@
     .ps-stamp{font-size:11px; font-weight:800; color:#1a4a6e;}
   }
 </style>
+
+<style id="mobile-opt">
+  /* بهینه‌سازی موبایل و آیفون */
+  html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  body{
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    overscroll-behavior-y: contain;
+  }
+  .top{
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .top .row{ min-height:52px; }
+  @media (max-width:899px){
+    .wrap{ padding:12px 12px 28px !important; }
+    .panel{ border-radius:16px; margin-bottom:12px; }
+    .panel-head{ padding:12px 14px; font-size:14px; }
+    .panel-body{ padding:12px 14px; }
+    .native, .amount-box input, select.native{
+      font-size:16px !important; /* جلوگیری از زوم خودکار iOS */
+      min-height:44px;
+    }
+    .inst-btn, .share-btn, .print-btn, .theme-chip{
+      min-height:44px; font-size:15px;
+      touch-action: manipulation;
+    }
+    .brand h1{ font-size:15px; }
+    .date-bar{ font-size:10px; gap:4px; }
+    .date-bar .d-item i{ display:none; }
+    #viewCalc{ display:block !important; }
+    #viewCalc > .panel{ margin-bottom:12px; }
+    .side-nav{
+      padding-top: calc(12px + env(safe-area-inset-top, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+  }
+  /* نوار اشتراک */
+  .share-bar{
+    display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
+    margin:14px 0 8px; position:relative; z-index:5;
+  }
+  .share-btn{
+    display:inline-flex !important; align-items:center; gap:10px;
+    border:none; cursor:pointer; font:inherit; font-weight:800;
+    padding:14px 22px; border-radius:16px; color:#fff;
+    background:linear-gradient(135deg, #0ea5e9, #0369a1);
+    box-shadow:0 8px 22px -8px rgba(3,105,161,.45);
+    min-height:48px; touch-action:manipulation;
+  }
+  .share-btn:active{ transform:scale(.98); }
+  .share-btn .sb-ico{ font-size:20px; line-height:1; }
+
+  /* مودال اشتراک */
+  .share-overlay{
+    display:none; position:fixed; inset:0; z-index:5000;
+    background:rgba(10,20,35,.55); backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+    align-items:flex-end; justify-content:center;
+    padding:0;
+  }
+  .share-overlay.show{ display:flex; }
+  .share-sheet{
+    width:100%; max-width:560px;
+    background:var(--paper, #fff); color:var(--ink, #0f172a);
+    border-radius:20px 20px 0 0;
+    padding:16px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+    box-shadow:0 -8px 40px rgba(0,0,0,.25);
+    max-height:88vh; display:flex; flex-direction:column; gap:12px;
+    animation: sheetUp .28s ease;
+  }
+  @keyframes sheetUp{ from{ transform:translateY(40%); opacity:.5;} to{ transform:none; opacity:1;} }
+  .share-sheet h3{
+    margin:0; font-size:16px; font-weight:900; text-align:center;
+    color:var(--navy, #14335a);
+  }
+  .share-sheet .hint{
+    font-size:12px; color:var(--muted,#64748b); text-align:center; line-height:1.6;
+  }
+  .share-sheet textarea{
+    width:100%; min-height:220px; max-height:45vh; resize:vertical;
+    border:1px solid var(--line,#d0dbe8); border-radius:14px;
+    padding:12px; font-size:13px; line-height:1.75; font-family:inherit;
+    background:var(--paper-2,#f5f8fb); color:inherit; box-sizing:border-box;
+    direction:rtl;
+  }
+  .share-actions{
+    display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  }
+  .share-actions.three{ grid-template-columns:1fr 1fr 1fr; }
+  .share-actions button{
+    border:none; border-radius:14px; padding:12px 10px; font:inherit;
+    font-weight:800; font-size:13px; cursor:pointer; min-height:46px;
+    touch-action:manipulation;
+  }
+  .sa-copy{ background:#e2e8f0; color:#0f172a; }
+  .sa-share{ background:linear-gradient(135deg,#0ea5e9,#0369a1); color:#fff; }
+  .sa-sms{ background:linear-gradient(135deg,#22c55e,#15803d); color:#fff; }
+  .sa-close{
+    grid-column:1 / -1; background:transparent; color:var(--muted,#64748b);
+    border:1px solid var(--line,#d0dbe8) !important;
+  }
+  @media (min-width:600px){
+    .share-overlay{ align-items:center; padding:20px; }
+    .share-sheet{ border-radius:20px; max-height:80vh; }
+  }
+</style>
 </head>
 <body>
 
@@ -816,12 +921,6 @@
     <section class="panel">
       <div class="panel-head"><span class="idx">۲</span>مشخصات محاسبه</div>
       <div class="panel-body" id="formBody"></div>
-      <div class="panel-body print-bar">
-        <button type="button" class="print-btn" id="printBtn">
-          <span class="pb-ico">🖨</span>
-          چاپ محاسبات
-        </button>
-      </div>
     </section>
 
     <section class="panel">
@@ -829,9 +928,31 @@
       <div class="panel-body" id="resultsBody"></div>
     </section>
 
+    <div class="share-bar">
+      <button type="button" class="share-btn" id="shareBtn">
+        <span class="sb-ico">📤</span>
+        ارسال نتایج (پیامک / اشتراک)
+      </button>
+    </div>
+
   </div>
 
   <div id="printSheet" aria-hidden="true"></div>
+
+  <!-- مودال اشتراک نتایج -->
+  <div class="share-overlay" id="shareOverlay" aria-hidden="true">
+    <div class="share-sheet" role="dialog" aria-labelledby="shareTitle">
+      <h3 id="shareTitle">ارسال نتایج محاسبه</h3>
+      <div class="hint">متن زیر آماده ارسال است. می‌توانید کپی کنید، با پیامک بفرستید یا در پیام‌رسان‌ها به اشتراک بگذارید.</div>
+      <textarea id="shareText" readonly dir="rtl"></textarea>
+      <div class="share-actions three">
+        <button type="button" class="sa-copy" id="shareCopy">کپی متن</button>
+        <button type="button" class="sa-share" id="shareNative">اشتراک‌گذاری</button>
+        <button type="button" class="sa-sms" id="shareSms">پیامک</button>
+        <button type="button" class="sa-close" id="shareClose">بستن</button>
+      </div>
+    </div>
+  </div>
 
   <!-- About view -->
   <div id="viewAbout" style="display:none;">
@@ -2063,37 +2184,160 @@ function buildPrintHtml(){
     </div>
   </div>`;
 }
-function doPrint(){
-  const html = buildPrintHtml();
-  if(!html){
-    alert('ابتدا مبلغ را وارد کنید تا محاسبات قابل چاپ باشد.');
+/* ---------------- اشتراک / پیامک نتایج ---------------- */
+function buildShareText(){
+  const plan = getPlan();
+  const amount = state.amount || 0;
+  if(!(amount>0)) return null;
+
+  const now = new Date();
+  let dateStr = '';
+  try{
+    const o = {};
+    new Intl.DateTimeFormat('fa-IR-u-ca-persian', {weekday:'long', day:'numeric', month:'long', year:'numeric'})
+      .formatToParts(now).forEach(p=>{ o[p.type]=p.value; });
+    dateStr = [o.weekday, o.day, o.month, o.year].filter(Boolean).join(' ');
+  }catch(e){ dateStr = faDigits(now.toLocaleDateString('fa-IR')); }
+  const timeStr = faDigits(String(now.getHours()).padStart(2,'0')) + ':' + faDigits(String(now.getMinutes()).padStart(2,'0'));
+
+  const opts = buildInstOptions(plan, amount);
+  const defaultRate = plan.defaultRate!=null ? plan.defaultRate : 23;
+  const feeStyle = (plan.key==='ofogh') || (plan.defaultRate!=null && plan.defaultRate<=5 && !plan.lump);
+  const amountLabel = plan.amountLabel || 'مبلغ سپرده / میانگین';
+
+  const lines = [];
+  lines.push('📋 فرم محاسبه تسهیلات — ' + plan.title);
+  lines.push('📅 ' + dateStr + '  ⏰ ' + timeStr);
+  lines.push('──────────────');
+  lines.push(amountLabel + ': ' + formatToman(amount));
+  lines.push('مدت سپرده‌گذاری: ' + durationLabel(plan));
+  lines.push('نوع حساب / بسته: ' + accountLabel(plan));
+  lines.push('نام طرح: ' + plan.title);
+  lines.push('──────────────');
+  lines.push('مدت بازپرداخت و سقف تسهیلات:');
+
+  opts.forEach(o=>{
+    const months = o.months;
+    const rate = o.rate!=null ? o.rate : defaultRate;
+    const isOver = plan.cap && o.amount > plan.cap;
+    let block = '• ' + o.label + '\n  سقف: ' + formatToman(o.amount);
+    if(o.lump){
+      const interest = months ? periodInterest(o.amount, months, rate, feeStyle) : periodInterest(o.amount, 12, rate, feeStyle);
+      const lab = feeStyle ? 'کارمزد تقریبی' : 'سود تقریبی';
+      block += '\n  ' + lab + ': ' + formatApprox(interest);
+      block += '\n  مجموع پرداختی تقریبی: ' + formatApprox(o.amount + interest);
+    } else if(months){
+      const inst = monthlyInstallment(o.amount, months, rate, feeStyle);
+      const totalPay = inst * months;
+      const interestTotal = totalPay - o.amount;
+      block += '\n  قسط تقریبی: ' + formatApprox(inst);
+      if(interestTotal > 1){
+        block += '\n  ' + (feeStyle ? 'مجموع کارمزد تقریبی' : 'مجموع سود تقریبی') + ': ' + formatApprox(interestTotal);
+        block += '\n  مجموع پرداختی تقریبی: ' + formatApprox(totalPay);
+      }
+    }
+    if(isOver) block += '\n  ⚠ فراتر از سقف فردی';
+    lines.push(block);
+  });
+
+  lines.push('──────────────');
+  lines.push('نتایج صرفاً جنبه اطلاع‌رسانی دارند. تصمیم نهایی بر اساس ضوابط شعبه است.');
+  lines.push('مبالغ اقساط/سود/کارمزد تقریبی و رند به بالا (گام ۵۰۰٬۰۰۰ ریال) است.');
+  return lines.join('\n');
+}
+
+function openShareSheet(){
+  const txt = buildShareText();
+  if(!txt){
+    alert('ابتدا مبلغ را وارد کنید تا نتایج قابل ارسال باشد.');
     return;
   }
-  const sheet = document.getElementById('printSheet');
-  sheet.innerHTML = html;
-  // اطمینان از رندر قبل از چاپ — بدون absolute/visibility که صفحه سفید می‌سازد
-  setTimeout(()=>{
-    try{ window.print(); }
-    catch(err){ alert('چاپ در این مرورگر اجرا نشد. لطفاً از کلید Ctrl+P استفاده کنید.'); }
-  }, 80);
+  const ta = document.getElementById('shareText');
+  const ov = document.getElementById('shareOverlay');
+  if(ta) ta.value = txt;
+  if(ov){
+    ov.classList.add('show');
+    ov.setAttribute('aria-hidden','false');
+  }
 }
-function bindPrintButton(){
-  const btn = document.getElementById('printBtn');
-  if(!btn) return;
-  btn.disabled = false;
-  btn.style.pointerEvents = 'auto';
-  btn.style.opacity = '1';
-  btn.onclick = function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    doPrint();
-  };
+function closeShareSheet(){
+  const ov = document.getElementById('shareOverlay');
+  if(ov){
+    ov.classList.remove('show');
+    ov.setAttribute('aria-hidden','true');
+  }
 }
-bindPrintButton();
+async function copyShareText(){
+  const ta = document.getElementById('shareText');
+  if(!ta || !ta.value) return;
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(ta.value);
+    } else {
+      ta.focus(); ta.select();
+      document.execCommand('copy');
+    }
+    const btn = document.getElementById('shareCopy');
+    if(btn){ const old=btn.textContent; btn.textContent='کپی شد ✓'; setTimeout(()=>{btn.textContent=old;},1500); }
+  }catch(e){
+    ta.focus(); ta.select();
+    alert('متن را دستی کپی کنید (نگه داشتن و Copy).');
+  }
+}
+async function nativeShare(){
+  const ta = document.getElementById('shareText');
+  const text = ta ? ta.value : '';
+  if(!text) return;
+  if(navigator.share){
+    try{
+      await navigator.share({ title: 'نتایج محاسبه تسهیلات', text: text });
+      return;
+    }catch(e){
+      if(e && e.name==='AbortError') return;
+    }
+  }
+  // فallback: کپی
+  await copyShareText();
+  alert('اشتراک‌گذاری سیستمی در دسترس نیست. متن کپی شد؛ در پیام‌رسان Paste کنید.');
+}
+function smsShare(){
+  const ta = document.getElementById('shareText');
+  const text = ta ? ta.value : '';
+  if(!text) return;
+  // iOS و اندروید: sms: با body
+  const body = encodeURIComponent(text.slice(0, 1500)); // محدودیت تقریبی پیامک
+  const url = 'sms:?&body=' + body;
+  try{
+    window.location.href = url;
+  }catch(e){
+    copyShareText();
+    alert('باز کردن پیامک ممکن نشد. متن کپی شد.');
+  }
+}
+
+function bindShareButton(){
+  const btn = document.getElementById('shareBtn');
+  if(btn){
+    btn.onclick = function(e){ e.preventDefault(); openShareSheet(); };
+  }
+  const ov = document.getElementById('shareOverlay');
+  if(ov){
+    ov.addEventListener('click', function(e){ if(e.target===ov) closeShareSheet(); });
+  }
+  const c = document.getElementById('shareClose');
+  if(c) c.onclick = closeShareSheet;
+  const cp = document.getElementById('shareCopy');
+  if(cp) cp.onclick = copyShareText;
+  const sh = document.getElementById('shareNative');
+  if(sh) sh.onclick = nativeShare;
+  const sm = document.getElementById('shareSms');
+  if(sm) sm.onclick = smsShare;
+}
+bindShareButton();
 
 renderAll();
 setView('calc');
-bindPrintButton(); // دوباره بعد از render برای اطمینان
+bindShareButton();
 </script>
 </body>
 </html>
