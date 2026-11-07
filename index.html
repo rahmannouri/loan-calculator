@@ -443,6 +443,7 @@
       box-shadow: -8px 0 28px rgba(0,0,0,.22);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: max(20px, env(safe-area-inset-bottom));
     }
     .side-nav.open{
@@ -471,13 +472,22 @@
     justify-content: space-between;
     gap: 10px;
     padding: 10px 14px;
-    padding-top: max(10px, env(safe-area-inset-top));
+    /* iOS: safe-area + کمی فاصله اضافه تا همبرگر زیر ناچ نرود */
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    padding-bottom: 10px;
     background: linear-gradient(135deg, var(--side-from, #0b5aa3) 0%, var(--side-to, #084a8a) 100%);
     color: #fff;
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 12px rgba(0,0,0,.12);
+    min-height: 52px;
+    box-sizing: border-box;
+  }
+  @supports (padding-top: env(safe-area-inset-top)) {
+    .mobile-topbar {
+      padding-top: calc(10px + env(safe-area-inset-top));
+    }
   }
   .mobile-topbar .mt-title{
     font-size: 15px;
@@ -1410,7 +1420,7 @@
               <label class="field-label">نوع محاسبه</label>
               <select class="native" id="loanType" onchange="toggleLoanInputs()">
                 <option value="install">وام اقساطی</option>
-                <option value="qarz">قرض‌الحسنه (کارمزد ۴٪)</option>
+                <option value="qarz">قرض‌الحسنه</option>
                 <option value="lump">وام یکجا پرداخت</option>
               </select>
             </div>
@@ -1426,6 +1436,13 @@
               <label class="field-label">نرخ سود سالانه (٪)</label>
               <div class="amount-box">
                 <input type="number" id="loanRate" value="23" step="0.1" min="0" style="direction:ltr;text-align:right;">
+                <span class="unit">٪</span>
+              </div>
+            </div>
+            <div class="field-block" id="feeRateContainer" style="display:none;">
+              <label class="field-label">نرخ کارمزد سالانه (٪)</label>
+              <div class="amount-box">
+                <input type="number" id="loanFeeRate" value="4" step="0.1" min="0" style="direction:ltr;text-align:right;">
                 <span class="unit">٪</span>
               </div>
             </div>
@@ -3760,6 +3777,7 @@ function toggleLoanInputs() {
   let type = document.getElementById('loanType').value;
   let durationLabel = document.getElementById('durationLabel');
   let rateContainer = document.getElementById('rateContainer');
+  let feeRateContainer = document.getElementById('feeRateContainer');
   let intervalContainer = document.getElementById('intervalContainer');
   let durationUnit = document.getElementById('durationUnit');
   let loanResult = document.getElementById('loanResult');
@@ -3767,18 +3785,21 @@ function toggleLoanInputs() {
   if (type === 'lump') {
     durationLabel.innerText = "مدت وام (روز)";
     if(durationUnit) durationUnit.textContent = 'روز';
-    rateContainer.style.display = 'block';
-    intervalContainer.style.display = 'none';
+    if(rateContainer) rateContainer.style.display = 'block';
+    if(feeRateContainer) feeRateContainer.style.display = 'none';
+    if(intervalContainer) intervalContainer.style.display = 'none';
   } else if (type === 'qarz') {
     durationLabel.innerText = "تعداد کل اقساط (ماه)";
     if(durationUnit) durationUnit.textContent = 'ماه';
-    rateContainer.style.display = 'none';
-    intervalContainer.style.display = 'block';
+    if(rateContainer) rateContainer.style.display = 'none';
+    if(feeRateContainer) feeRateContainer.style.display = 'block';
+    if(intervalContainer) intervalContainer.style.display = 'block';
   } else {
     durationLabel.innerText = "تعداد اقساط (ماه)";
     if(durationUnit) durationUnit.textContent = 'ماه';
-    rateContainer.style.display = 'block';
-    intervalContainer.style.display = 'block';
+    if(rateContainer) rateContainer.style.display = 'block';
+    if(feeRateContainer) feeRateContainer.style.display = 'none';
+    if(intervalContainer) intervalContainer.style.display = 'block';
   }
 }
 
@@ -3808,12 +3829,13 @@ function calculateLoan() {
       <div class="res-row"><span class="res-label">کل سود وام</span><span class="res-dots"></span><span class="res-val">${faNum(totalInterest)} ریال</span></div>
       <div class="res-row res-total"><span class="res-label">مجموع بازپرداخت</span><span class="res-dots"></span><span class="res-val">${faNum(totalPay)} ریال</span></div>`;
   } else if (type === 'qarz') {
+    let feeRate = parseFloat((document.getElementById('loanFeeRate')||{}).value) || 4;
     let years = Math.ceil(duration / 12);
     let remainingPrincipal = p;
     let totalFee = 0;
     let feeRows = '';
     for (let i = 1; i <= years; i++) {
-      let yearlyFee = remainingPrincipal * 0.04;
+      let yearlyFee = remainingPrincipal * (feeRate / 100);
       totalFee += yearlyFee;
       feeRows += `<div class="res-row"><span class="res-label">کارمزد سال ${i}</span><span class="res-dots"></span><span class="res-val">${faNum(yearlyFee)} ریال</span></div>`;
       remainingPrincipal -= (p / years);
@@ -3825,6 +3847,7 @@ function calculateLoan() {
       <div class="res-row"><span class="res-label">اصل مبلغ وام</span><span class="res-dots"></span><span class="res-val">${faNum(p)} ریال</span></div>
       <div class="res-row"><span class="res-label">تعداد اقساط</span><span class="res-dots"></span><span class="res-val">${faNum(duration)}</span></div>
       <div class="res-row"><span class="res-label">فاصله اقساط</span><span class="res-dots"></span><span class="res-val">هر ${intervalMonths} ماه</span></div>
+      <div class="res-row"><span class="res-label">نرخ کارمزد سالانه</span><span class="res-dots"></span><span class="res-val">${feeRate}٪</span></div>
       ${feeRows}
       <div class="res-row"><span class="res-label">مجموع کارمزد کل</span><span class="res-dots"></span><span class="res-val">${faNum(totalFee)} ریال</span></div>
       <div class="res-row res-total"><span class="res-label">مبلغ هر قسط (اصل)</span><span class="res-dots"></span><span class="res-val">${faNum(monthlyInstallment)} ریال</span></div>
@@ -4314,6 +4337,7 @@ function findBank(){
     const shetab = '<div class="shetab-mark" title="شبکه شتاب" role="img" aria-label="آرم شتاب"></div>';
     resDiv.style.display = 'block';
     resDiv.className = '';
+    try{ el.blur(); }catch(e){}
     resDiv.innerHTML = `
       <div class="bank-card" style="background: linear-gradient(145deg, ${color} 0%, ${color}ee 45%, ${color}bb 100%);">
         <div class="bank-card-top">
