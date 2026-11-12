@@ -329,6 +329,70 @@
   .rtable td.na{color:var(--danger); font-weight:600; font-size:12px;}
   .rtable tbody tr:nth-child(even) td, .rtable tbody tr:nth-child(even) th{background:#F5F7F9;}
 
+  /* کارت‌های نتیجه تسهیلات — کنار هم برای کاهش اسکرول */
+  .result-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+    gap:8px;
+  }
+  .result-card{
+    background:var(--card, #fff);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px 12px;
+    box-shadow:0 1px 3px rgba(15,40,80,.04);
+    min-width:0;
+  }
+  .result-card.over-cap{border-color:#e11d48;}
+  .result-card .rc-label{font-size:11.5px; font-weight:700; color:var(--navy-2); margin-bottom:4px; line-height:1.4;}
+  .result-card .rc-facility{
+    font-size:15px; font-weight:800; color:var(--navy);
+    direction:ltr; text-align:right; letter-spacing:-0.2px;
+    line-height:1.25; margin-bottom:6px;
+  }
+  .result-card .rc-badge{
+    display:inline-block; font-size:10px; font-weight:800;
+    color:#fff; background:#e11d48; border-radius:6px;
+    padding:2px 7px; margin-bottom:6px;
+  }
+  .result-card .rc-sub{
+    display:flex; flex-direction:column; gap:2px;
+    border-top:1px dashed var(--line); padding-top:6px;
+  }
+  .result-card .rc-sub > div{
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:10.5px; color:var(--muted); gap:6px;
+  }
+  .result-card .rc-k{font-weight:600; white-space:nowrap;}
+  .result-card .rc-v{font-weight:700; color:var(--navy-2); direction:ltr; font-size:11px; text-align:left;}
+  .result-card.na-card .rc-na{color:var(--danger); font-size:12px; font-weight:600;}
+  @media (max-width:480px){
+    .result-cards{grid-template-columns:1fr 1fr;}
+    .result-card .rc-facility{font-size:13.5px;}
+  }
+
+  /* آکاردئون تنظیمات */
+  .settings-acc{border:1px solid var(--line); border-radius:12px; margin-bottom:10px; overflow:hidden; background:var(--card,#fff);}
+  .settings-acc > summary{
+    list-style:none; cursor:pointer; padding:12px 14px;
+    font-weight:700; font-size:13.5px; color:var(--navy);
+    background:#f5f8fc; user-select:none;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .settings-acc > summary::-webkit-details-marker{display:none;}
+  .settings-acc > summary::after{content:'▾'; font-size:12px; color:var(--muted);}
+  .settings-acc[open] > summary::after{content:'▴';}
+  .settings-acc .acc-body{padding:12px 14px 14px;}
+  .settings-lock-box{
+    background:#f8fafc; border:1px dashed var(--line); border-radius:12px;
+    padding:14px; margin-bottom:14px;
+  }
+  :root[data-theme="dark"] .settings-acc > summary{background:#1e2a3a; color:#e8eef5;}
+  :root[data-theme="dark"] .settings-lock-box{background:#1a2433;}
+  :root[data-theme="dark"] .result-card{background:#1a2433; border-color:#2a3a4f;}
+  :root[data-theme="dark"] .result-card .rc-facility{color:#93c5fd;}
+  :root[data-theme="dark"] .result-card .rc-v{color:#cbd5e1;}
+
   .subhead{font-size:11.5px; font-weight:700; color:var(--muted); margin:14px 0 8px;}
   .subhead:first-child{margin-top:0;}
 
@@ -427,82 +491,17 @@
   :root[data-theme="dark"] .side-nav .nav-item.active{background:#ffffff !important; color:#1e3a5f !important;}
   :root[data-theme="dark"] .side-nav .nav-item.active .nav-ico{color:#1e3a5f !important;}
 
-  /* موبایل: منوی کشویی */
   @media(max-width:800px){
     body{flex-direction:column;}
     .side-nav{
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: min(280px, 82vw);
-      height: 100%;
-      height: 100dvh;
-      z-index: 200;
-      transform: translateX(105%);
-      transition: transform .28s cubic-bezier(.4,0,.2,1);
-      box-shadow: -8px 0 28px rgba(0,0,0,.22);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-top: env(safe-area-inset-top, 0px);
-      padding-bottom: max(20px, env(safe-area-inset-bottom));
+      width:auto; height:auto; position:static;
+      flex-direction:row; flex-wrap:wrap; padding:10px; gap:4px;
     }
-    .side-nav.open{
-      transform: translateX(0);
-    }
-    .side-nav .nav-head{display:block;}
-    .side-nav .nav-items{flex-direction:column; flex-wrap:nowrap; gap:4px;}
-    .side-nav .nav-item{padding:12px 14px; font-size:14px; width:100%;}
-    .nav-overlay{
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.45);
-      z-index: 190;
-      backdrop-filter: blur(2px);
-    }
-    .nav-overlay.show{ display: block; }
-    .burger{ display: flex !important; }
-    .mobile-topbar{ display: flex !important; }
+    .side-nav .nav-head{display:none;}
+    .side-nav .nav-items{flex-direction:row; flex-wrap:wrap; gap:4px;}
+    .side-nav .nav-item{padding:9px 12px; font-size:13px; width:auto;}
     .wrap{padding:14px 12px 30px;}
   }
-
-  .mobile-topbar{
-    display: none;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 10px 14px;
-    /* iOS: safe-area + کمی فاصله اضافه تا همبرگر زیر ناچ نرود */
-    padding-top: calc(8px + env(safe-area-inset-top, 0px));
-    padding-bottom: 10px;
-    background: linear-gradient(135deg, var(--side-from, #0b5aa3) 0%, var(--side-to, #084a8a) 100%);
-    color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 12px rgba(0,0,0,.12);
-    min-height: 52px;
-    box-sizing: border-box;
-  }
-  @supports (padding-top: env(safe-area-inset-top)) {
-    .mobile-topbar {
-      padding-top: calc(10px + env(safe-area-inset-top));
-    }
-  }
-  .mobile-topbar .mt-title{
-    font-size: 15px;
-    font-weight: 800;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .mobile-topbar .mt-sub{
-    font-size: 11px;
-    opacity: .85;
-    font-weight: 500;
-  }
-  .mobile-topbar .mt-text{ min-width: 0; flex: 1; }
-
 
   .about-body{line-height:2.1; font-size:13.5px; color:var(--navy-3);}
   .about-body h3{margin:18px 0 6px; font-size:14px; color:var(--navy); font-weight:800;}
@@ -981,6 +980,71 @@
 .ibl64.ibl-miran{background-position:0 -384px}
 .ibl64.ibl-melal{background-position:-64px -384px}
 
+
+/* ---- تقویم شمسی (دسکتاپ دو ستونه) ---- */
+.cal-layout{display:flex;flex-direction:row;gap:18px;align-items:flex-start;max-width:980px;margin:0 auto;}
+.cal-wrap{direction:rtl;flex:1.15;min-width:0;max-width:560px;}
+.cal-side{flex:0.95;min-width:260px;max-width:380px;}
+.cal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
+.cal-header .cal-title{font-size:18px;font-weight:800;color:var(--navy);text-align:center;flex:1;font-variant-numeric:normal;font-feature-settings:"tnum" 0;}
+.cal-nav-btn{width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--paper-2);color:var(--navy);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cal-nav-btn:hover{background:var(--accent-2);}
+.cal-nav-btn:active{transform:scale(.96);}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;}
+.cal-weekdays span{text-align:center;font-size:12.5px;font-weight:700;color:var(--muted);padding:6px 0;}
+.cal-weekdays span.fri{color:#c0392b;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.cal-day{min-height:58px;height:auto;border:1px solid var(--line);border-radius:12px;background:var(--paper-2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;padding:8px 4px;transition:.15s;gap:2px;}
+.cal-day:hover{border-color:var(--accent);background:#f7fbff;}
+.cal-day .d-num{font-size:15px;font-weight:800;color:var(--navy-3);line-height:1.2;}
+.cal-day.empty{background:transparent;border-color:transparent;cursor:default;pointer-events:none;}
+.cal-day.empty:hover{background:transparent;border-color:transparent;}
+.cal-day.today{box-shadow:inset 0 0 0 2px var(--accent);border-color:var(--accent);}
+.cal-day.selected{background:var(--accent);border-color:var(--accent);}
+.cal-day.selected .d-num{color:#fff;}
+.cal-day.holiday .d-num, .cal-day.friday .d-num{color:#c0392b;}
+.cal-day.selected.holiday .d-num, .cal-day.selected.friday .d-num{color:#fff;}
+.cal-day.holiday{background:#fdf2f2;}
+.cal-day.has-note::after{content:"";position:absolute;bottom:6px;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.cal-day.selected.has-note::after{background:#fff;}
+.cal-detail{padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--paper-2);}
+.cal-detail .cd-date{font-weight:800;color:var(--navy);font-size:15px;margin-bottom:6px;}
+.cal-detail .cd-meta{font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:12px;}
+.cal-detail .cd-meta b{color:var(--navy-3);font-weight:700;}
+.cal-detail textarea{width:100%;min-height:70px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:13.5px;resize:vertical;box-sizing:border-box;background:var(--input-bg,#fff);color:var(--navy-3);}
+.cal-bottom-actions{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
+.cal-detail .cd-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.cal-detail .cd-actions button{flex:1;min-width:120px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;}
+.cal-detail .btn-save-note{background:var(--navy);color:#fff;border-color:var(--navy);}
+.cal-detail .btn-toggle-hol{background:#fff;color:#c0392b;border-color:#f5c6cb;}
+.cal-detail .btn-toggle-hol.on{background:#c0392b;color:#fff;border-color:#c0392b;}
+.cal-notes-list{display:flex;flex-direction:column;gap:10px;margin:10px 0 14px;}
+.cal-note-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid transparent;border-radius:12px;background:#eef6ff;border-right:5px solid #2f80ed;box-shadow:0 2px 8px rgba(47,128,237,.12);}
+.cal-note-item.rep-daily{background:#eefbf3;border-right-color:#27ae60;box-shadow:0 2px 8px rgba(39,174,96,.12);}
+.cal-note-item.rep-weekly{background:#fff6e8;border-right-color:#f2994a;box-shadow:0 2px 8px rgba(242,153,74,.12);}
+.cal-note-item.rep-monthly{background:#f4eefa;border-right-color:#9b51e0;box-shadow:0 2px 8px rgba(155,81,224,.12);}
+.cal-note-item .cn-text{flex:1;font-size:14px;line-height:1.75;color:#1a2b3c;white-space:pre-wrap;word-break:break-word;font-weight:600;}
+.cal-note-item .cn-meta{display:inline-block;font-size:11px;font-weight:700;margin-top:6px;padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.06);color:#445;}
+.cal-note-item .cn-del{border:0;background:rgba(192,57,43,.1);color:#c0392b;border-radius:8px;padding:7px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;}
+.cal-note-item .cn-del:hover{background:#c0392b;color:#fff;}
+.cal-notes-empty{font-size:12.5px;color:var(--muted);margin:6px 0 10px;padding:10px;border:1px dashed var(--line);border-radius:10px;text-align:center;}
+:root[data-theme="dark"] .cal-note-item{background:rgba(47,128,237,.15);color:#e8eef5;}
+:root[data-theme="dark"] .cal-note-item .cn-text{color:#e8eef5;}
+:root[data-theme="dark"] .cal-note-item.rep-daily{background:rgba(39,174,96,.15);}
+:root[data-theme="dark"] .cal-note-item.rep-weekly{background:rgba(242,153,74,.15);}
+:root[data-theme="dark"] .cal-note-item.rep-monthly{background:rgba(155,81,224,.15);}
+.cal-repeat-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0;}
+.cal-repeat-row label{font-size:12.5px;font-weight:700;color:var(--navy-2);}
+.cal-repeat-row select{padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;font-size:13px;background:var(--input-bg,#fff);color:var(--navy-3);}
+@media (max-width:800px){
+  .cal-layout{flex-direction:column;}
+  .cal-wrap,.cal-side{max-width:100%;width:100%;}
+}
+:root[data-theme="dark"] .cal-day.holiday{background:rgba(192,57,43,.15);}
+:root[data-theme="dark"] .cal-detail .btn-toggle-hol{background:var(--input-bg);color:#e74c3c;}
+:root[data-theme="dark"] .cal-day:hover{background:rgba(255,255,255,.04);}
+:root[data-theme="dark"] .cal-note-item{background:var(--input-bg);}
+
 </style>
 
 <style id="windows-pro">
@@ -1014,8 +1078,6 @@
  body{background:var(--paper)}
  .burger{display:none!important}
  .nav-overlay{display:none!important}
- .mobile-topbar{display:none!important}
- .side-nav{transform:none!important; position:sticky!important; height:100vh!important; width:230px!important;}
  .wrap{max-width:none !important; margin:0 !important; padding:16px 24px 50px !important;}
  #viewHome,#viewCalc,#viewAbout,#viewSettings{max-width:none;margin:0}
  .app-footer{margin:0}
@@ -1201,7 +1263,7 @@
       display:block !important;
     }
     header.top, .side-nav, .nav-overlay, .burger, .print-bar,
-    #viewCalc, #viewAbout, #viewSettings, #viewTransfer, #viewCardbin, #viewPsp, #viewLoan, #viewDeposit, #viewDatecalc, #viewLifeins, #viewFireins, .app-footer{display:none !important;}
+    #viewCalc, #viewAbout, #viewSettings, #viewTransfer, #viewCardbin, #viewPsp, #viewLoan, #viewDeposit, #viewCalendar, #viewDatecalc, #viewLifeins, #viewFireins, .app-footer{display:none !important;}
     body > *:not(.wrap){display:none !important;}
     .wrap{margin:0 !important; padding:0 !important; max-width:none !important; display:block !important; width:100% !important;}
     .wrap > *:not(#printSheet){display:none !important;}
@@ -1280,18 +1342,6 @@
 </head>
 <body>
 
-
-<!-- نوار بالای موبایل -->
-<div class="mobile-topbar" id="mobileTopbar">
-  <button type="button" class="burger" id="burgerBtn" aria-label="منو" onclick="toggleNav()">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="mt-text">
-    <div class="mt-title">ابزار بانکی</div>
-    <div class="mt-sub" id="mobilePageTitle">محاسبات تسهیلات و سپرده</div>
-  </div>
-</div>
-
 <!-- Side navigation (like Amval) -->
 <nav class="side-nav" id="sideNav">
   <div class="nav-head">
@@ -1311,8 +1361,12 @@
       <span class="nav-ico">🏦</span>
       سود سپرده
     </button>
-    <button type="button" class="nav-item" data-view="datecalc">
+    <button type="button" class="nav-item" data-view="calendar">
       <span class="nav-ico">📅</span>
+      تقویم
+    </button>
+    <button type="button" class="nav-item" data-view="datecalc">
+      <span class="nav-ico">⏳</span>
       محاسبات زمانی
     </button>
     <button type="button" class="nav-item" data-view="lifeins">
@@ -1387,20 +1441,20 @@
         <p>مبالغ به ریال هستند. نتایج محاسباتی صرفاً جنبه اطلاع‌رسانی دارند و تصمیم نهایی بر اساس ضوابط شعبه و مصوبات مربوطه است.</p>
 
         <h3>نسخه</h3>
-        <p>نسخه ۳.۱</p>
+        <p>نسخه 4.0</p>
 
         <h3>تهیه‌کننده</h3>
         <p>عبدالرحمان نوری</p>
 
         <h3>ارتباط با تهیه‌کننده</h3>
         <div class="contact-list">
-          <a class="contact-item" href="https://t.me/Rahman_Nouri" target="_blank" rel="noopener">
-            <span class="contact-ico">✈</span>
+          <div class="contact-item" style="cursor:default;">
+            <span class="contact-ico">✉</span>
             <span class="contact-text">
-              <span class="contact-label">تلگرام</span>
-              <span class="contact-val">@Rahman_Nouri</span>
+              <span class="contact-label">پیام اتوماسیونی</span>
+              <span class="contact-val">شماره پرسنلی ۱۱۹۳۰</span>
             </span>
-          </a>
+          </div>
         </div>
 
       </div>
@@ -1504,10 +1558,60 @@
     </section>
   </div>
 
-  <!-- Date calculations -->
+  <!-- تقویم -->
+  <div id="viewCalendar" style="display:none;">
+    <section class="panel">
+      <div class="panel-head"><span class="idx">📅</span>تقویم شمسی</div>
+      <div class="panel-body">
+        <div class="cal-layout">
+          <div class="cal-wrap">
+            <div class="cal-header">
+              <button type="button" class="cal-nav-btn" id="calNextBtn" aria-label="ماه بعد">‹</button>
+              <div class="cal-title" id="calTitle">—</div>
+              <button type="button" class="cal-nav-btn" id="calPrevBtn" aria-label="ماه قبل">›</button>
+            </div>
+            <div class="cal-weekdays">
+              <span>شنبه</span><span>یکشنبه</span><span>دوشنبه</span><span>سه‌شنبه</span><span>چهارشنبه</span><span>پنجشنبه</span><span class="fri">جمعه</span>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+          <div class="cal-side">
+            <div class="cal-detail" id="calDetail" style="display:none;">
+              <div class="cd-date" id="calDetailDate"></div>
+              <div class="cd-meta" id="calDetailMeta"></div>
+              <label class="field-label">رویدادها و یادداشت‌های این روز</label>
+              <div class="cal-notes-list" id="calNotesList"></div>
+              <div class="cal-bottom-actions">
+                <label class="field-label">افزودن رویداد / یادداشت</label>
+                <textarea id="calNoteInput" placeholder="متن رویداد یا یادداشت..."></textarea>
+                <div class="cal-repeat-row">
+                  <label for="calRepeat">تکرار:</label>
+                  <select id="calRepeat">
+                    <option value="none">بدون تکرار</option>
+                    <option value="daily">هر روز</option>
+                    <option value="weekly">هر هفته</option>
+                    <option value="monthly">هر ماه</option>
+                  </select>
+                </div>
+                <div class="cd-actions">
+                  <button type="button" class="btn-save-note" onclick="saveCalNote()">افزودن</button>
+                  <button type="button" class="btn-toggle-hol" id="calHolBtn" onclick="toggleCalHoliday()">تعطیل کردن این روز</button>
+                </div>
+              </div>
+            </div>
+            <div id="calDetailPlaceholder" class="cal-detail" style="color:var(--muted);font-size:13.5px;line-height:1.9;">
+              یک روز را از تقویم انتخاب کنید تا معادل میلادی/قمری و یادداشت‌ها نمایش داده شود.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- محاسبات زمانی -->
   <div id="viewDatecalc" style="display:none;">
     <section class="panel">
-      <div class="panel-head"><span class="idx">۴</span>فاصله دو تاریخ</div>
+      <div class="panel-head"><span class="idx">⏳</span>فاصله دو تاریخ</div>
       <div class="panel-body">
         <div class="calc-split">
           <div class="calc-inputs">
@@ -1573,7 +1677,6 @@
                 <input type="number" id="lifeRate" value="0.7" step="0.01" min="0" readonly style="direction:ltr;text-align:right;">
                 <span class="unit">٪</span>
               </div>
-              <button type="button" class="unlock-rate-btn" onclick="unlockRate('lifeRate','lifeRateBox')">تغییر نرخ (نیاز به رمز)</button>
             </div>
             <div class="field-block">
               <label class="field-label">مدت (ماه)</label>
@@ -1620,7 +1723,6 @@
                 <input type="number" id="fireRate" value="0.185" step="0.001" min="0" readonly style="direction:ltr;text-align:right;">
                 <span class="unit">نرخ</span>
               </div>
-              <button type="button" class="unlock-rate-btn" onclick="unlockRate('fireRate','fireRateBox')">تغییر نرخ (نیاز به رمز)</button>
             </div>
             <div class="field-block">
               <label class="field-label">مدت (سال)</label>
@@ -1647,10 +1749,10 @@
         <div class="field-block">
           <label class="field-label">نوع انتقال</label>
           <select class="native" id="transferType">
-            <option value="card">کارت به کارت / سحاب (سقف ۱۵۰ میلیون ریال)</option>
-            <option value="pal">سامانه پل (سقف ۱ میلیارد ریال)</option>
-            <option value="paya">سامانه پایا – انفرادی (سقف ۲ میلیارد ریال)</option>
-            <option value="satna">سامانه ساتنا (کف ۱ میلیارد ریال)</option>
+            <option value="card">کارت به کارت / سحاب</option>
+            <option value="pal">سامانه پل</option>
+            <option value="paya">سامانه پایا – انفرادی</option>
+            <option value="satna">سامانه ساتنا</option>
           </select>
         </div>
         <div class="field-block">
@@ -1712,22 +1814,46 @@
     <section class="panel">
       <div class="panel-head"><span class="idx">⚙</span>تنظیمات</div>
       <div class="panel-body">
-        <label class="field-label">تم برنامه</label>
+
+        <details class="settings-acc" open>
+          <summary>تم برنامه</summary>
+          <div class="acc-body">
         <div class="theme-options">
           <button type="button" class="theme-chip" data-theme-choice="blue"><span class="dot"></span>آبی</button>
           <button type="button" class="theme-chip" data-theme-choice="teal"><span class="dot"></span>سبز دریایی</button>
           <button type="button" class="theme-chip" data-theme-choice="purple"><span class="dot"></span>بنفش</button>
           <button type="button" class="theme-chip" data-theme-choice="dark"><span class="dot"></span>تیره</button>
         </div>
+          </div>
+        </details>
 
-        <div class="field-block" style="margin-top:22px;">
-          <label class="field-label">کارمزد انتقال وجه (قابل ویرایش)</label>
-          <p style="font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.7;">برای تغییر نرخ‌ها وارد کردن رمز لازم است. نرخ‌ها بر اساس بخشنامه کارمزد خدمات الکترونیکی به‌روز شده‌اند.</p>
+        <details class="settings-acc">
+          <summary>اصلاح تقویم قمری</summary>
+          <div class="acc-body">
+          <p style="font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.7;">اگر روز قمری با تقویم رسمی اختلاف داشت، از اینجا جابه‌جا کنید.</p>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <select id="hijriOffsetSelect" class="native" style="max-width:220px;">
+              <option value="-2">۲ روز عقب‌تر</option>
+              <option value="-1">۱ روز عقب‌تر</option>
+              <option value="0" selected>بدون تغییر (پیش‌فرض)</option>
+              <option value="1">۱ روز جلوتر</option>
+              <option value="2">۲ روز جلوتر</option>
+            </select>
+            <button type="button" class="print-btn" style="width:auto;padding:10px 16px;" onclick="setHijriDayOffset(document.getElementById('hijriOffsetSelect').value)">اعمال</button>
+          </div>
+          </div>
+        </details>
+
+        <details class="settings-acc">
+          <summary>کارمزد و سقف/کف انتقال وجه</summary>
+          <div class="acc-body">
+          <p style="font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.7;">با همان رمز مدیریت در بخش پایین قابل ویرایش است. نرخ‌ها بر اساس بخشنامه کارمزد خدمات الکترونیکی‌اند.</p>
           <div id="feeLockPanel">
-            <div class="amount-box" style="margin-bottom:8px;">
-              <input type="password" id="feePassInput" placeholder="رمز تغییر کارمزد" style="direction:ltr;text-align:center;">
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
+              <input type="password" id="feePassInput" placeholder="رمز مدیریت" maxlength="20" autocomplete="off"
+                style="direction:ltr;text-align:center;width:140px;max-width:45%;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:14px;background:var(--input-bg,#FBFCFD);color:var(--navy-3);">
+              <button type="button" class="print-btn" style="flex:1;min-width:140px;margin:0;" onclick="tryUnlockFees()">باز کردن ویرایش</button>
             </div>
-            <button type="button" class="print-btn" style="width:100%;" onclick="tryUnlockFees()">باز کردن ویرایش کارمزدها</button>
           </div>
           <div id="feeEditPanel" style="display:none;margin-top:12px;">
             <div style="margin-bottom:10px;">
@@ -1739,6 +1865,7 @@
             <div class="field-block"><label class="field-label">پایا – نرخ (مثلاً ۰.۰۱ برای ۰٫۰۱٪)</label><div class="amount-box"><input id="feePayaRate" type="number" step="0.001" style="direction:ltr;text-align:right;"><span class="unit">٪</span></div></div>
             <div class="field-block"><label class="field-label">پایا – کف (ریال)</label><div class="amount-box"><input id="feePayaMin" inputmode="numeric" style="direction:ltr;text-align:right;"></div></div>
             <div class="field-block"><label class="field-label">پایا – سقف کارمزد (ریال)</label><div class="amount-box"><input id="feePayaMax" inputmode="numeric" style="direction:ltr;text-align:right;"></div></div>
+            <div class="field-block"><label class="field-label">پایا – سقف مبلغ هر انتقال (ریال)</label><div class="amount-box"><input id="feePayaMaxAmt" inputmode="numeric" style="direction:ltr;text-align:right;"></div></div>
             <div class="field-block"><label class="field-label">ساتنا – نرخ (٪)</label><div class="amount-box"><input id="feeSatnaRate" type="number" step="0.001" style="direction:ltr;text-align:right;"><span class="unit">٪</span></div></div>
             <div class="field-block"><label class="field-label">ساتنا – سقف کارمزد (ریال)</label><div class="amount-box"><input id="feeSatnaMax" inputmode="numeric" style="direction:ltr;text-align:right;"></div></div>
             <div class="field-block"><label class="field-label">ساتنا – کف مبلغ انتقال (ریال)</label><div class="amount-box"><input id="feeSatnaMinAmt" inputmode="numeric" style="direction:ltr;text-align:right;"></div></div>
@@ -1749,10 +1876,12 @@
             <button type="button" class="unlock-rate-btn" style="width:100%;margin-top:6px;text-align:center;display:block;" onclick="resetFeeDefaults()">بازگشت به نرخ‌های پیش‌فرض (بخشنامه)</button>
             <button type="button" class="lock-section-btn" onclick="lockFees()">🔒 قفل مجدد این بخش</button>
           </div>
-        </div>
+          </div>
+        </details>
 
-        <div class="field-block" style="margin-top:22px;">
-          <label class="field-label">رند کردن مبلغ تسهیلات</label>
+        <details class="settings-acc">
+          <summary>رند کردن مبلغ تسهیلات</summary>
+          <div class="acc-body">
           <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--paper-2);line-height:1.7;">
             <input type="checkbox" id="roundFacilityChk" style="margin-top:4px;width:18px;height:18px;flex-shrink:0;" />
             <span>
@@ -1775,91 +1904,141 @@
               مثال با گام ۵۰۰ میلیون: ۴٬۱۰۵٬۰۰۰٬۰۰۰ → ۴٬۰۰۰٬۰۰۰٬۰۰۰
             </div>
           </div>
-        </div>
+          </div>
+        </details>
+
+        <details class="settings-acc">
+          <summary>فعال / غیرفعال‌سازی طرح‌ها</summary>
+          <div class="acc-body">
+            <div id="lockPlans" class="settings-lock-box">
+              <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.7;">برای ویرایش این بخش رمز را وارد کنید.</p>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <input type="password" id="passPlans" placeholder="رمز" maxlength="20" autocomplete="off"
+                  style="direction:ltr;text-align:center;width:140px;max-width:45%;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:14px;">
+                <button type="button" class="print-btn" style="flex:1;min-width:120px;margin:0;" onclick="unlockSection('plans')">باز کردن</button>
+              </div>
+            </div>
+            <div id="bodyPlans" style="display:none;">
+              <p style="font-size:11.5px;color:var(--muted);margin:0 0 8px;line-height:1.7;">غیرفعال: از لیست انتخاب حذف می‌شود. حذف: از برنامه برداشته می‌شود (تا بازنشانی).</p>
+              <div id="adminPlanList" style="display:flex;flex-direction:column;gap:8px;"></div>
+              <button type="button" class="lock-section-btn" style="margin-top:10px;" onclick="lockSection('plans')">قفل مجدد</button>
+            </div>
+          </div>
+        </details>
+
+        <details class="settings-acc">
+          <summary>سقف فردی تسهیلات</summary>
+          <div class="acc-body">
+            <div id="lockCaps" class="settings-lock-box">
+              <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.7;">برای ویرایش این بخش رمز را وارد کنید.</p>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <input type="password" id="passCaps" placeholder="رمز" maxlength="20" autocomplete="off"
+                  style="direction:ltr;text-align:center;width:140px;max-width:45%;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:14px;">
+                <button type="button" class="print-btn" style="flex:1;min-width:120px;margin:0;" onclick="unlockSection('caps')">باز کردن</button>
+              </div>
+            </div>
+            <div id="bodyCaps" style="display:none;">
+              <p style="font-size:11.5px;color:var(--muted);margin:0 0 8px;line-height:1.7;">سقف قابل پرداخت برای هر نفر (ریال). مبالغ بالاتر از سقف با برچسب «فراتر از سقف» مشخص می‌شوند.</p>
+              <div class="field-block">
+                <label class="field-label">سقف طرح خرد (و طرح‌های مشابه)</label>
+                <div class="coef-stepper">
+                  <button type="button" class="coef-btn" onclick="nudgeCapInput('capKhord',-100000000)">−</button>
+                  <div class="amount-box">
+                    <input type="text" id="capKhord" inputmode="numeric" style="direction:ltr;text-align:center;">
+                    <span class="unit">ریال</span>
+                  </div>
+                  <button type="button" class="coef-btn" onclick="nudgeCapInput('capKhord',100000000)">+</button>
+                </div>
+                <div class="amount-words" id="capKhordWords" style="margin-top:4px;"></div>
+              </div>
+              <div class="field-block">
+                <label class="field-label">سقف طرح افق</label>
+                <div class="coef-stepper">
+                  <button type="button" class="coef-btn" onclick="nudgeCapInput('capOfogh',-100000000)">−</button>
+                  <div class="amount-box">
+                    <input type="text" id="capOfogh" inputmode="numeric" style="direction:ltr;text-align:center;">
+                    <span class="unit">ریال</span>
+                  </div>
+                  <button type="button" class="coef-btn" onclick="nudgeCapInput('capOfogh',100000000)">+</button>
+                </div>
+                <div class="amount-words" id="capOfoghWords" style="margin-top:4px;"></div>
+              </div>
+              <button type="button" class="print-btn" style="width:100%;padding:10px 12px !important;font-size:12.5px !important;margin-top:6px;" onclick="saveFacilityCaps()">ذخیره سقف‌ها</button>
+              <div id="capEditStatus" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
+              <button type="button" class="lock-section-btn" style="margin-top:10px;" onclick="lockSection('caps')">قفل مجدد</button>
+            </div>
+          </div>
+        </details>
+
+        <details class="settings-acc">
+          <summary>ویرایش ضرایب طرح‌ها</summary>
+          <div class="acc-body">
+            <div id="lockCoefs" class="settings-lock-box">
+              <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.7;">برای ویرایش این بخش رمز را وارد کنید.</p>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <input type="password" id="passCoefs" placeholder="رمز" maxlength="20" autocomplete="off"
+                  style="direction:ltr;text-align:center;width:140px;max-width:45%;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:14px;">
+                <button type="button" class="print-btn" style="flex:1;min-width:120px;margin:0;" onclick="unlockSection('coefs')">باز کردن</button>
+              </div>
+            </div>
+            <div id="bodyCoefs" style="display:none;">
+              <p style="font-size:11.5px;color:var(--muted);margin:0 0 8px;line-height:1.7;">طرح، نوع حساب و مدت سپرده‌گذاری را انتخاب کنید؛ سپس ضرایب بازپرداخت را ویرایش و ذخیره کنید.</p>
+              <div class="field-block">
+                <label class="field-label">طرح</label>
+                <select class="native" id="coefPlanSelect" onchange="onCoefPlanChange()"></select>
+              </div>
+              <div class="field-block" id="coefAccountWrap">
+                <label class="field-label">نوع حساب</label>
+                <select class="native" id="coefAccountSelect" onchange="onCoefAccountChange()"></select>
+              </div>
+              <div class="field-block" id="coefDurationWrap">
+                <label class="field-label">مدت سپرده‌گذاری</label>
+                <select class="native" id="coefDurationSelect" onchange="onCoefDurationChange()"></select>
+              </div>
+              <div id="coefEditorBox" style="margin-top:10px;"></div>
+              <div style="display:flex;gap:8px;margin-top:10px;">
+                <button type="button" class="print-btn" style="flex:1;padding:10px 12px !important;font-size:12.5px !important;" onclick="saveCoefEdits()">ذخیره ضرایب این بخش</button>
+                <button type="button" class="print-btn" style="flex:1;padding:10px 12px !important;font-size:12.5px !important;background:linear-gradient(135deg,#64748b,#475569) !important;" onclick="resetCoefForCurrent()">بازگشت به ضرایب اصلی این بخش</button>
+              </div>
+              <div id="coefEditStatus" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
+              <button type="button" class="lock-section-btn" style="margin-top:10px;" onclick="lockSection('coefs')">قفل مجدد</button>
+            </div>
+          </div>
+        </details>
+
+        <details class="settings-acc">
+          <summary>نرخ بیمه عمر و حریق</summary>
+          <div class="acc-body">
+            <div id="lockIns" class="settings-lock-box">
+              <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.7;">برای ویرایش این بخش رمز را وارد کنید.</p>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <input type="password" id="passIns" placeholder="رمز" maxlength="20" autocomplete="off"
+                  style="direction:ltr;text-align:center;width:140px;max-width:45%;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:14px;">
+                <button type="button" class="print-btn" style="flex:1;min-width:120px;margin:0;" onclick="unlockSection('ins')">باز کردن</button>
+              </div>
+            </div>
+            <div id="bodyIns" style="display:none;">
+              <div class="field-block">
+                <label class="field-label">نرخ بیمه عمر (٪)</label>
+                <div class="amount-box">
+                  <input type="number" id="settingsLifeRate" step="0.01" min="0" style="direction:ltr;text-align:right;" value="0.7">
+                  <span class="unit">٪</span>
+                </div>
+              </div>
+              <div class="field-block">
+                <label class="field-label">نرخ بیمه حریق</label>
+                <div class="amount-box">
+                  <input type="number" id="settingsFireRate" step="0.001" min="0" style="direction:ltr;text-align:right;" value="0.185">
+                </div>
+              </div>
+              <button type="button" class="print-btn" style="width:100%;margin-top:8px;" onclick="saveInsuranceRatesFromSettings()">ذخیره نرخ بیمه‌ها</button>
+              <div id="insRateStatus" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
+              <button type="button" class="lock-section-btn" style="margin-top:10px;" onclick="lockSection('ins')">قفل مجدد</button>
+            </div>
+          </div>
+        </details>
       </div>
     </section>
-
-    <!-- مدیریت طرح‌ها و ضرایب (رمزدار) -->
-    <section class="panel" style="margin-top:14px;">
-      <div class="panel-head"><span class="idx">🔐</span>مدیریت طرح‌ها و ضرایب</div>
-      <div class="panel-body">
-        <div id="adminLockPanel">
-          <p style="font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 12px;">برای فعال/غیرفعال کردن طرح‌ها یا تغییر ضرایب، رمز مدیریت را وارد کنید.</p>
-          <div class="field-block">
-            <label class="field-label">رمز مدیریت</label>
-            <div class="amount-box">
-              <input type="password" id="adminPassInput" placeholder="رمز را وارد کنید" style="direction:ltr;text-align:center;">
-            </div>
-          </div>
-          <button type="button" class="print-btn" style="width:100%;" onclick="tryUnlockAdmin()">ورود به بخش مدیریت</button>
-        </div>
-        <div id="adminPanel" style="display:none;">
-          <div style="margin-bottom:12px;">
-            <span style="font-size:12.5px;font-weight:700;color:var(--accent);">✓ بخش مدیریت باز است</span>
-          </div>
-
-          <div class="field-block">
-            <label class="field-label">طرح‌های موجود</label>
-            <p style="font-size:11.5px;color:var(--muted);margin:0 0 8px;line-height:1.7;">غیرفعال: از لیست انتخاب حذف می‌شود. حذف: از برنامه برداشته می‌شود (تا بازنشانی).</p>
-            <div id="adminPlanList" style="display:flex;flex-direction:column;gap:8px;"></div>
-          </div>
-
-          <div class="field-block" style="margin-top:18px;">
-            <label class="field-label">سقف فردی تسهیلات</label>
-            <p style="font-size:11.5px;color:var(--muted);margin:0 0 8px;line-height:1.7;">سقف قابل پرداخت برای هر نفر (ریال). مبالغ بالاتر از سقف در چاپ با برچسب «فراتر از سقف» مشخص می‌شوند.</p>
-            <div class="field-block">
-              <label class="field-label">سقف طرح خرد (و طرح‌های مشابه)</label>
-              <div class="coef-stepper">
-                <button type="button" class="coef-btn" onclick="nudgeCapInput('capKhord',-100000000)">−</button>
-                <div class="amount-box">
-                  <input type="text" id="capKhord" inputmode="numeric" style="direction:ltr;text-align:center;">
-                  <span class="unit">ریال</span>
-                </div>
-                <button type="button" class="coef-btn" onclick="nudgeCapInput('capKhord',100000000)">+</button>
-              </div>
-              <div class="amount-words" id="capKhordWords" style="margin-top:4px;"></div>
-            </div>
-            <div class="field-block">
-              <label class="field-label">سقف طرح افق</label>
-              <div class="coef-stepper">
-                <button type="button" class="coef-btn" onclick="nudgeCapInput('capOfogh',-100000000)">−</button>
-                <div class="amount-box">
-                  <input type="text" id="capOfogh" inputmode="numeric" style="direction:ltr;text-align:center;">
-                  <span class="unit">ریال</span>
-                </div>
-                <button type="button" class="coef-btn" onclick="nudgeCapInput('capOfogh',100000000)">+</button>
-              </div>
-              <div class="amount-words" id="capOfoghWords" style="margin-top:4px;"></div>
-            </div>
-            <button type="button" class="print-btn" style="width:100%;padding:10px 12px !important;font-size:12.5px !important;margin-top:6px;" onclick="saveFacilityCaps()">ذخیره سقف‌ها</button>
-            <div id="capEditStatus" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
-          </div>
-
-          <div class="field-block" style="margin-top:18px;">
-            <label class="field-label">ویرایش ضرایب طرح</label>
-            <p style="font-size:11.5px;color:var(--muted);margin:0 0 8px;line-height:1.7;">طرح، نوع حساب و مدت سپرده‌گذاری را انتخاب کنید؛ سپس ضرایب بازپرداخت را ویرایش و ذخیره کنید.</p>
-            <div class="field-block">
-              <label class="field-label">طرح</label>
-              <select class="native" id="coefPlanSelect" onchange="onCoefPlanChange()"></select>
-            </div>
-            <div class="field-block" id="coefAccountWrap">
-              <label class="field-label">نوع حساب</label>
-              <select class="native" id="coefAccountSelect" onchange="onCoefAccountChange()"></select>
-            </div>
-            <div class="field-block" id="coefDurationWrap">
-              <label class="field-label">مدت سپرده‌گذاری</label>
-              <select class="native" id="coefDurationSelect" onchange="onCoefDurationChange()"></select>
-            </div>
-            <div id="coefEditorBox" style="margin-top:10px;"></div>
-            <div style="display:flex;gap:8px;margin-top:10px;">
-              <button type="button" class="print-btn" style="flex:1;padding:10px 12px !important;font-size:12.5px !important;" onclick="saveCoefEdits()">ذخیره ضرایب این بخش</button>
-              <button type="button" class="print-btn" style="flex:1;padding:10px 12px !important;font-size:12.5px !important;background:linear-gradient(135deg,#64748b,#475569) !important;" onclick="resetCoefForCurrent()">بازگشت به ضرایب اصلی این بخش</button>
-            </div>
-            <div id="coefEditStatus" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
-          </div>
-
-          <button type="button" class="lock-section-btn" onclick="lockAdmin()">🔒 قفل مجدد این بخش</button>
-        </div>
       </div>
     </section>
   </div>
@@ -2179,7 +2358,7 @@ const OLD_COEF_EXPIRY = new Date(2026, 10, 22);   // ۱ آذر ۱۴۰۵ (پای�
 const ROUND_LABELS = ['دفعه اول','دفعه دوم','دفعه سوم','دفعه چهارم','دفعه پنجم'];
 
 /* ---------------- STATE ---------------- */
-let state = { plan:'khord', amount:0, accountType:'جاری', duration:3, coef:65, gap:1, pkg:'عمومی', repayDur:2, view:'calc', coefSet:'new', instOpen:false, roundFacility:false, roundStep:50000000, disabledPlans:{}, deletedPlans:{}, adminUnlocked:false, coefOverrides:{} };
+let state = { plan:'khord', amount:0, accountType:'جاری', duration:3, coef:65, gap:1, pkg:'عمومی', repayDur:2, view:'calc', coefSet:'new', instOpen:false, roundFacility:false, roundStep:50000000, disabledPlans:{}, deletedPlans:{}, adminUnlocked:false, unlocks:{plans:false,caps:false,coefs:false,ins:false}, coefOverrides:{} };
 // نگه‌داری نسخه اصلی ضرایب برای بازنشانی
 const ORIGINAL_PLANS = JSON.parse(JSON.stringify(PLANS));
 try{
@@ -2272,7 +2451,7 @@ function buildInstOptions(plan, amount){
     const row = plan.table[state.accountType][state.duration];
     Object.keys(row).forEach(k=>{
       if(row[k]===null) return;
-      o.push({label:(plan.repayLabels[k]||k), amount:scaleFacility(row[k]*amount), months: plan.repayYears ? Number(k)*12 : Number(k), lump:!!plan.lump});
+      o.push({label:(plan.repayLabels[k]||k), amount:scaleFacility(row[k]*amount), months: getRepayMonths(plan, k), lump:!!plan.lump});
     });
   } else if(plan.kind==='harekat'){
     const names = ['یک','دو','سه'];
@@ -2295,8 +2474,6 @@ function buildInstOptions(plan, amount){
     const coef = state.coef || 0;
     const gap = plan.noGap ? 1 : (state.gap || 1);
     const secs = [
-      {title:'مشارکتی', lump:true, calc:c=> c.sh!=null ? amount*coef*c.sh/100 : null},
-      {title:'خرید دین', lump:true, calc:c=> c.kh!=null ? amount*coef*c.kh/100 : null},
       {title:'مبادله‌ای', calc:c=> c.mo ? amount*Math.max(0, c.mo.c-((gap-1)*c.mo.s))*coef/100 : null},
     ];
     secs.forEach(sec=>{
@@ -2652,43 +2829,84 @@ function renderResults(){
 
   if(plan.kind==='standard'){
     const row = plan.table[state.accountType][state.duration];
-    html += `<table class="rtable"><thead><tr><th>مدت بازپرداخت</th><th>سقف تسهیلات</th></tr></thead><tbody>`;
+    const defaultRate = (plan.defaultRate != null) ? plan.defaultRate : 23;
+    html += `<div class="result-cards">`;
     Object.keys(row).forEach(k=>{
       const mult = row[k];
       const label = plan.repayLabels[k] || k;
       if(mult===null){
-        html += `<tr><th>${label}</th><td class="na">در این ترکیب ارائه نمی‌شود</td></tr>`;
+        html += `<div class="result-card na-card"><div class="rc-label">${label}</div><div class="rc-na">ارائه نمی‌شود</div></div>`;
       } else {
-        html += `<tr><th>${label}</th><td class="val">${formatToman(roundFacilityAmount(mult*amount))}</td></tr>`;
+        const fac = roundFacilityAmount(mult*amount);
+        const months = getRepayMonths(plan, k);
+        const mm = computeRepayMetrics(plan, fac, months, defaultRate, !!plan.lump);
+        const feeWord = mm.feeStyle ? 'کارمزد' : 'سود';
+        html += `<div class="result-card${mm.overCap?' over-cap':''}">
+          <div class="rc-label">${label}</div>
+          <div class="rc-facility">${formatToman(fac)}</div>
+          ${mm.overCap ? '<div class="rc-badge">فراتر از سقف فردی</div>' : ''}
+          ${mm.overCap ? `<div style="font-size:9.5px;color:#e11d48;margin:0 0 4px;line-height:1.4;">اقساط بر اساس سقف ${formatToman(mm.planCap)}</div>` : ''}
+          <div class="rc-sub">` + (mm.lump
+            ? `<div><span class="rc-k">${feeWord} دوره</span><span class="rc-v">${formatToman(ceilInst(mm.interest))}</span></div><div><span class="rc-k">مجموع</span><span class="rc-v">${formatToman(ceilInst(mm.total))}</span></div>`
+            : `<div><span class="rc-k">قسط تقریبی</span><span class="rc-v">${mm.inst!=null?formatToman(mm.inst):'—'}</span></div><div><span class="rc-k">${feeWord} تقریبی</span><span class="rc-v">${formatToman(mm.interest)}</span></div><div><span class="rc-k">مجموع</span><span class="rc-v">${formatToman(mm.total)}</span></div>`) + `
+          </div>
+        </div>`;
       }
     });
-    html += `</tbody></table>`;
+    html += `</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.7;">قسط و ${isFeeStylePlan(plan)?'کارمزد':'سود'} تقریبی بر اساس نرخ ${faDigits(defaultRate)}٪ و رند شده است. در صورت عبور از سقف فردی، محاسبات فقط تا سقف انجام می‌شود.</div>`;
   }
 
   if(plan.kind==='harekat'){
     if(state.accountType==='حساب جاری'){
-      const tiers = plan.jari[state.duration];
+      const tiers = plan.jari[state.duration] || [];
+      html += `<div class="result-cards">`;
       tiers.forEach(t=>{
-        html += `<div class="tier-row">
-          <div class="t-top"><span class="t-label">سقف تسهیلات</span><span class="t-amount">${formatToman(roundFacilityAmount(t.mult*amount))}</span></div>
-          <table class="rtable" style="margin-top:10px"><tbody>
-            <tr><th>بازپرداخت یک ساله</th><td class="val">${faDigits(t.r1)}٪</td></tr>
-            <tr><th>بازپرداخت دو ساله</th><td class="${t.r2==null?'na':'val'}">${t.r2==null?'ندارد':faDigits(t.r2)+'٪'}</td></tr>
-            <tr><th>بازپرداخت سه ساله</th><td class="${t.r3==null?'na':'val'}">${t.r3==null?'ندارد':faDigits(t.r3)+'٪'}</td></tr>
-          </tbody></table>
-        </div>`;
+        const fac = roundFacilityAmount(t.mult*amount);
+        [{y:1,r:t.r1},{y:2,r:t.r2},{y:3,r:t.r3}].forEach(item=>{
+          if(item.r==null) return;
+          const mm = computeRepayMetrics(plan, fac, item.y*12, item.r, false);
+          html += `<div class="result-card${mm.overCap?' over-cap':''}">
+            <div class="rc-label">بازپرداخت ${faDigits(item.y)} ساله · نرخ ${faDigits(item.r)}٪</div>
+            <div class="rc-facility">${formatToman(fac)}</div>
+            ${mm.overCap ? '<div class="rc-badge">فراتر از سقف فردی</div>' : ''}
+            ${mm.overCap ? `<div style="font-size:9.5px;color:#e11d48;margin:0 0 4px;line-height:1.4;">اقساط بر اساس سقف ${formatToman(mm.planCap)}</div>` : ''}
+            <div class="rc-sub">
+              <div><span class="rc-k">قسط تقریبی</span><span class="rc-v">${mm.inst!=null?formatToman(mm.inst):'—'}</span></div>
+              <div><span class="rc-k">سود تقریبی</span><span class="rc-v">${formatToman(mm.interest)}</span></div>
+              <div><span class="rc-k">مجموع</span><span class="rc-v">${formatToman(mm.total)}</span></div>
+            </div>
+          </div>`;
+        });
       });
+      html += `</div>`;
     } else {
       const row = plan.kootah[state.duration];
       const labels = {y1:'بازپرداخت یک ساله (نرخ ۹٪)', y2:'بازپرداخت دو ساله (نرخ ۹٪)', y3:'بازپرداخت سه ساله (نرخ ۹٪)'};
-      html += `<table class="rtable"><thead><tr><th>مدت بازپرداخت</th><th>سقف تسهیلات</th></tr></thead><tbody>`;
+      const yearMap = {y1:1, y2:2, y3:3};
+      html += `<div class="result-cards">`;
       Object.keys(row).forEach(k=>{
         const mult = row[k];
-        html += mult===null
-          ? `<tr><th>${labels[k]}</th><td class="na">ارائه نمی‌شود</td></tr>`
-          : `<tr><th>${labels[k]}</th><td class="val">${formatToman(roundFacilityAmount(mult*amount))}</td></tr>`;
+        const label = labels[k] || k;
+        if(mult===null){
+          html += `<div class="result-card na-card"><div class="rc-label">${label}</div><div class="rc-na">ارائه نمی‌شود</div></div>`;
+        } else {
+          const fac = roundFacilityAmount(mult*amount);
+          const mm = computeRepayMetrics(plan, fac, (yearMap[k]||1)*12, 9, false);
+          html += `<div class="result-card${mm.overCap?' over-cap':''}">
+            <div class="rc-label">${label}</div>
+            <div class="rc-facility">${formatToman(fac)}</div>
+            ${mm.overCap ? '<div class="rc-badge">فراتر از سقف فردی</div>' : ''}
+            ${mm.overCap ? `<div style="font-size:9.5px;color:#e11d48;margin:0 0 4px;line-height:1.4;">اقساط بر اساس سقف ${formatToman(mm.planCap)}</div>` : ''}
+            <div class="rc-sub">
+              <div><span class="rc-k">قسط تقریبی</span><span class="rc-v">${mm.inst!=null?formatToman(mm.inst):'—'}</span></div>
+              <div><span class="rc-k">سود تقریبی</span><span class="rc-v">${formatToman(mm.interest)}</span></div>
+              <div><span class="rc-k">مجموع</span><span class="rc-v">${formatToman(mm.total)}</span></div>
+            </div>
+          </div>`;
+        }
       });
-      html += `</tbody></table>`;
+      html += `</div>`;
     }
   }
 
@@ -2696,32 +2914,49 @@ function renderResults(){
     const cell = plan.table[state.accountType][state.duration];
     const coef = state.coef || 0;
     const gap = plan.noGap ? 1 : (state.gap || 1);
+    const defaultRate = (plan.defaultRate != null) ? plan.defaultRate : 23;
     html += `<div class="tejari-results-wrap">`;
-
-    const resultSections = [
-      {key:'sh', title:'مشارکتی', calc:(c)=> c.sh!=null ? (amount*coef*c.sh/100) : null},
-      {key:'kh', title:'خرید دین', calc:(c)=> c.kh!=null ? (amount*coef*c.kh/100) : null},
-      {key:'mo', title:'مبادله‌ای', calc:(c)=> c.mo ? (amount*Math.max(0, c.mo.c-((gap-1)*c.mo.s))*coef/100) : null}
-    ];
-
-    resultSections.forEach(sec=>{
-      html += `<div class="tejari-result-card">
-        <div class="tejari-result-title">${sec.title}</div>
+    // مشارکتی و خرید دین: فقط سقف
+    [{key:'sh', title:'مشارکتی', calc:(c)=> c.sh!=null ? (amount*coef*c.sh/100) : null},
+     {key:'kh', title:'خرید دین', calc:(c)=> c.kh!=null ? (amount*coef*c.kh/100) : null}
+    ].forEach(sec=>{
+      html += `<div class="tejari-result-card"><div class="tejari-result-title">${sec.title}</div>
         <table class="rtable tejari-results"><thead><tr><th>بازپرداخت</th><th>سقف تسهیلات</th></tr></thead><tbody>`;
       plan.repayOrder.forEach(k=>{
-        const c = cell[k];
-        const label = plan.repayLabels[k];
-        if(!c){
-          html += `<tr><th>${label}</th><td class="na">ارائه نمی‌شود</td></tr>`;
-        } else {
+        const c = cell[k]; const label = plan.repayLabels[k];
+        if(!c){ html += `<tr><th>${label}</th><td class="na">ارائه نمی‌شود</td></tr>`; }
+        else {
           const val = sec.calc(c);
           html += `<tr><th>${label}</th><td class="${val==null?'na':'val'}">${val==null?'—':formatToman(roundFacilityAmount(val))}</td></tr>`;
         }
       });
       html += `</tbody></table></div>`;
     });
-
-    html += `</div>`;
+    // مبادله‌ای با قسط
+    html += `<div class="tejari-result-card"><div class="tejari-result-title">مبادله‌ای</div><div class="result-cards">`;
+    plan.repayOrder.forEach(k=>{
+      const c = cell[k]; const label = plan.repayLabels[k];
+      if(!c || !c.mo){
+        html += `<div class="result-card na-card"><div class="rc-label">${label}</div><div class="rc-na">ارائه نمی‌شود</div></div>`;
+        return;
+      }
+      const val = amount * Math.max(0, c.mo.c-((gap-1)*c.mo.s)) * coef / 100;
+      const fac = roundFacilityAmount(val);
+      const months = TEJARI_MONTHS[k] || 12;
+      const mm = computeRepayMetrics(plan, fac, months, defaultRate, false);
+      html += `<div class="result-card${mm.overCap?' over-cap':''}">
+        <div class="rc-label">${label}</div>
+        <div class="rc-facility">${formatToman(fac)}</div>
+        ${mm.overCap ? '<div class="rc-badge">فراتر از سقف فردی</div>' : ''}
+        ${mm.overCap ? `<div style="font-size:9.5px;color:#e11d48;margin:0 0 4px;line-height:1.4;">اقساط بر اساس سقف ${formatToman(mm.planCap)}</div>` : ''}
+        <div class="rc-sub">
+          <div><span class="rc-k">قسط تقریبی</span><span class="rc-v">${mm.inst!=null?formatToman(mm.inst):'—'}</span></div>
+          <div><span class="rc-k">سود تقریبی</span><span class="rc-v">${formatToman(mm.interest)}</span></div>
+          <div><span class="rc-k">مجموع</span><span class="rc-v">${formatToman(mm.total)}</span></div>
+        </div>
+      </div>`;
+    });
+    html += `</div></div></div>`;
   }
 
   if(plan.kind==='farma'){
@@ -2737,7 +2972,7 @@ function renderResults(){
 
   instOpts = buildInstOptions(plan, amount);
   html = capWarnHtml(plan) + html;
-  html += instSectionHtml(plan);
+  // inst button removed
 
   if(plan.extraNote){
     html += `<div class="note-box" style="margin-top:12px;">${plan.extraNote}</div>`;
@@ -2762,7 +2997,6 @@ function renderResults(){
   }
 
   el.innerHTML = html;
-  bindInst();
 }
 
 function renderAll(){
@@ -2778,6 +3012,7 @@ function setView(view){
     calc: 'viewCalc',
     loan: 'viewLoan',
     deposit: 'viewDeposit',
+    calendar: 'viewCalendar',
     datecalc: 'viewDatecalc',
     lifeins: 'viewLifeins',
     fireins: 'viewFireins',
@@ -2795,6 +3030,7 @@ function setView(view){
     calc: 'محاسبه امتیاز طرح‌ها',
     loan: 'محاسبه سود و کارمزد',
     deposit: 'محاسبه سود سپرده‌ها',
+    calendar: 'تقویم',
     datecalc: 'محاسبات زمانی',
     lifeins: 'محاسبه بیمه عمر تسهیلات',
     fireins: 'محاسبه بیمه حریق و ارزش افزوده',
@@ -2804,15 +3040,12 @@ function setView(view){
     settings: 'تنظیمات',
     about: 'درباره برنامه'
   };
-  const titleText = titles[view] || 'ابزار بانکی';
-  const pt = document.getElementById('pageTitle');
-  if(pt) pt.textContent = titleText;
-  const mpt = document.getElementById('mobilePageTitle');
-  if(mpt) mpt.textContent = titleText;
+  document.getElementById('pageTitle').textContent = titles[view] || 'ابزار بانکی';
   document.querySelectorAll('.nav-item').forEach(btn=>{
     btn.classList.toggle('active', btn.dataset.view === view);
   });
   closeNav();
+  if(view === 'calendar'){ try{ openCalendarOnToday(); }catch(e){} }
   if(view === 'calc'){
     try{ renderResults(); }catch(e){}
   }
@@ -2875,35 +3108,11 @@ document.querySelectorAll('.theme-chip').forEach(btn=>{
   });
 })();
 
-function openNav(){
-  const nav = document.getElementById('sideNav');
-  const ov = document.getElementById('navOverlay');
-  const bg = document.getElementById('burgerBtn');
-  if(nav) nav.classList.add('open');
-  if(ov) ov.classList.add('show');
-  if(bg) bg.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeNav(){
-  const nav = document.getElementById('sideNav');
-  const ov = document.getElementById('navOverlay');
-  const bg = document.getElementById('burgerBtn');
-  if(nav) nav.classList.remove('open');
-  if(ov) ov.classList.remove('show');
-  if(bg) bg.classList.remove('open');
-  document.body.style.overflow = '';
-}
-function toggleNav(){
-  const nav = document.getElementById('sideNav');
-  if(nav && nav.classList.contains('open')) closeNav();
-  else openNav();
-}
-document.getElementById('navOverlay')?.addEventListener('click', closeNav);
+function openNav(){}
+function closeNav(){}
+/* hamburger removed – permanent sidebar like Amval */
 document.querySelectorAll('.nav-item').forEach(btn=>{
-  btn.addEventListener('click', ()=> {
-    setView(btn.dataset.view);
-    closeNav();
-  });
+  btn.addEventListener('click', ()=> setView(btn.dataset.view));
 });
 document.querySelectorAll('[data-topview]').forEach(btn=>{
   btn.addEventListener('click', ()=> setView(btn.dataset.topview));
@@ -2995,10 +3204,45 @@ function monthlyInstallment(principal, months, annualRate, feeStyle){
 function periodInterest(principal, months, annualRate, feeStyle){
   if(!(principal>0) || !(months>0)) return 0;
   if(feeStyle){
-    // کارمزد تقریبی کل دوره روی متوسط مانده
     return principal * (annualRate/100) * 0.5 * (months/12);
   }
   return principal * (annualRate/100) * (months/12);
+}
+function getRepayMonths(plan, key){
+  const n = Number(key);
+  if(!n || isNaN(n)) return 0;
+  if(plan && plan.repayYears) return n * 12;
+  return n;
+}
+function isFeeStylePlan(plan){
+  if(!plan) return false;
+  if(plan.key === 'ofogh') return true;
+  return (plan.defaultRate != null && plan.defaultRate <= 5 && !plan.lump);
+}
+function computeRepayMetrics(plan, facility, months, rate, forceLump){
+  const planCap = (plan && plan.cap > 0) ? plan.cap : 0;
+  const overCap = planCap > 0 && facility > planCap;
+  const base = overCap ? planCap : facility;
+  const lump = forceLump != null ? !!forceLump : !!(plan && plan.lump);
+  const feeStyle = isFeeStylePlan(plan);
+  const r = (rate != null) ? rate : ((plan && plan.defaultRate != null) ? plan.defaultRate : 23);
+  let inst = null, interest = 0, total = base;
+  if(!(base > 0) || !(months > 0)){
+    return {overCap, base, inst:null, interest:0, total:base, lump, rate:r, feeStyle, planCap};
+  }
+  if(lump){
+    interest = periodInterest(base, months, r, feeStyle);
+    total = base + interest;
+    inst = null;
+  } else {
+    const pmt = monthlyInstallment(base, months, r, feeStyle);
+    const instR = ceilInst(pmt);
+    const totalPay = instR * months;
+    interest = Math.max(0, totalPay - base);
+    total = totalPay;
+    inst = instR;
+  }
+  return {overCap, base, inst, interest, total, lump, rate:r, feeStyle, planCap};
 }
 function durationLabel(plan){
   if(plan.kind==='farma') return faDigits(state.repayDur) + ' ماهه';
@@ -3031,27 +3275,25 @@ function buildPrintHtml(){
 
   let cards = '';
   opts.forEach(o=>{
-    const months = o.months;
+    const months = o.months || 12;
     const rate = o.rate!=null ? o.rate : defaultRate;
-    const isOver = plan.cap && o.amount > plan.cap;
+    const mm = computeRepayMetrics(plan, o.amount, months, rate, !!o.lump);
     let instHtml = '';
-    if(o.lump){
-      const interest = months ? periodInterest(o.amount, months, rate, feeStyle) : periodInterest(o.amount, 12, rate, feeStyle);
-      const lab = feeStyle ? 'کارمزد تقریبی دوره' : 'سود تقریبی دوره';
-      instHtml = `<div class="inst-lbl">${lab}</div><div class="inst-val">${formatApprox(interest)}</div>`
-        + `<div class="inst-lbl">مجموع پرداختی تقریبی</div><div class="inst-val">${formatApprox(o.amount + interest)}</div>`;
+    if(mm.lump){
+      const lab = mm.feeStyle ? 'کارمزد تقریبی دوره' : 'سود تقریبی دوره';
+      instHtml = (mm.overCap ? `<div class="inst-lbl" style="color:#e11d48;">اقساط بر اساس سقف ${formatToman(mm.planCap)}</div>` : '')
+        + `<div class="inst-lbl">${lab}</div><div class="inst-val">${formatApprox(mm.interest)}</div>`
+        + `<div class="inst-lbl">مجموع پرداختی تقریبی</div><div class="inst-val">${formatApprox(mm.total)}</div>`;
     } else if(months){
-      const inst = monthlyInstallment(o.amount, months, rate, feeStyle);
-      const totalPay = inst * months;
-      const interestTotal = totalPay - o.amount;
-      instHtml = `<div class="inst-lbl">قسط تقریبی</div><div class="inst-val">${formatApprox(inst)}</div>`;
-      if(interestTotal > 1){
-        instHtml += `<div class="inst-lbl">${feeStyle ? 'مجموع کارمزد تقریبی' : 'مجموع سود تقریبی'}</div><div class="inst-val">${formatApprox(interestTotal)}</div>`
-          + `<div class="inst-lbl">مجموع پرداختی تقریبی</div><div class="inst-val">${formatApprox(totalPay)}</div>`;
+      instHtml = (mm.overCap ? `<div class="inst-lbl" style="color:#e11d48;">اقساط بر اساس سقف ${formatToman(mm.planCap)}</div>` : '')
+        + `<div class="inst-lbl">قسط تقریبی</div><div class="inst-val">${mm.inst!=null?formatApprox(mm.inst):'—'}</div>`;
+      if(mm.interest > 1){
+        instHtml += `<div class="inst-lbl">${mm.feeStyle ? 'مجموع کارمزد تقریبی' : 'مجموع سود تقریبی'}</div><div class="inst-val">${formatApprox(mm.interest)}</div>`
+          + `<div class="inst-lbl">مجموع پرداختی تقریبی</div><div class="inst-val">${formatApprox(mm.total)}</div>`;
       }
     }
-    const badge = isOver ? `<span class="badge">فراتر از سقف فردی</span>` : '';
-    cards += `<div class="ps-opt${isOver ? ' over-cap' : ''}">
+    const badge = mm.overCap ? `<span class="badge">فراتر از سقف فردی</span>` : '';
+    cards += `<div class="ps-opt${mm.overCap ? ' over-cap' : ''}">
       <div class="dur">${o.label}</div>
       <div class="cap-lbl">سقف تسهیلات</div>
       <div class="cap-val">${formatToman(o.amount)}</div>
@@ -3158,9 +3400,10 @@ try{
 
 /* ---- قفل نرخ بیمه با رمز ---- */
 
-const RATE_PASSWORD = '135749155';
-
+/* یک رمز واحد برای مدیریت، نرخ بیمه و کارمزدها */
 const ADMIN_PASSWORD = '135749155';
+const RATE_PASSWORD = ADMIN_PASSWORD;
+const FEE_PASS_ALIAS = ADMIN_PASSWORD;
 
 function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
 
@@ -3236,25 +3479,49 @@ function restorePlanFromOriginal(planKey){
   if(orig.packages) live.packages = orig.packages;
 }
 
-function tryUnlockAdmin(){
-  const inp = document.getElementById('adminPassInput');
-  const pass = inp ? inp.value : '';
+function unlockSection(key){
+  const map = {plans:'passPlans', caps:'passCaps', coefs:'passCoefs', ins:'passIns'};
+  const inp = document.getElementById(map[key]);
+  const pass = (inp && inp.value) ? inp.value.trim() : '';
   if(pass === ADMIN_PASSWORD){
-    state.adminUnlocked = true;
-    document.getElementById('adminLockPanel').style.display = 'none';
-    document.getElementById('adminPanel').style.display = '';
+    if(!state.unlocks) state.unlocks = {};
+    state.unlocks[key] = true;
+    state.adminUnlocked = true; // سازگاری با توابع قدیمی
+    const lockEl = document.getElementById('lock'+key.charAt(0).toUpperCase()+key.slice(1));
+    // ids: lockPlans, lockCaps, lockCoefs, lockIns
+    const lockIds = {plans:'lockPlans', caps:'lockCaps', coefs:'lockCoefs', ins:'lockIns'};
+    const bodyIds = {plans:'bodyPlans', caps:'bodyCaps', coefs:'bodyCoefs', ins:'bodyIns'};
+    const lockBox = document.getElementById(lockIds[key]);
+    const bodyBox = document.getElementById(bodyIds[key]);
+    if(lockBox) lockBox.style.display = 'none';
+    if(bodyBox) bodyBox.style.display = '';
     if(inp) inp.value = '';
-    renderAdminPlanList();
-    fillCoefPlanSelect();
-    fillCapInputs();
+    if(key === 'plans'){ try{ renderAdminPlanList(); }catch(e){} }
+    if(key === 'caps'){ try{ fillCapInputs(); }catch(e){} }
+    if(key === 'coefs'){ try{ onCoefPlanChange(); }catch(e){ try{ renderCoefEditor(); }catch(e2){} } }
+    if(key === 'ins'){ try{ fillInsuranceRateInputs(); }catch(e){} }
   } else {
     alert('رمز نادرست است.');
+    if(inp){ inp.value=''; inp.focus(); }
   }
 }
+function lockSection(key){
+  if(!state.unlocks) state.unlocks = {};
+  state.unlocks[key] = false;
+  const lockIds = {plans:'lockPlans', caps:'lockCaps', coefs:'lockCoefs', ins:'lockIns'};
+  const bodyIds = {plans:'bodyPlans', caps:'bodyCaps', coefs:'bodyCoefs', ins:'bodyIns'};
+  const lockBox = document.getElementById(lockIds[key]);
+  const bodyBox = document.getElementById(bodyIds[key]);
+  if(lockBox) lockBox.style.display = '';
+  if(bodyBox) bodyBox.style.display = 'none';
+}
+function tryUnlockAdmin(){
+  // سازگاری — دیگر استفاده نمی‌شود
+  unlockSection('plans');
+}
 function lockAdmin(){
+  ['plans','caps','coefs','ins'].forEach(lockSection);
   state.adminUnlocked = false;
-  document.getElementById('adminLockPanel').style.display = '';
-  document.getElementById('adminPanel').style.display = 'none';
 }
 function persistPlanFlags(){
   try{
@@ -3291,7 +3558,7 @@ function renderAdminPlanList(){
   }).join('');
 }
 function togglePlanDisabled(key){
-  if(!state.adminUnlocked) return;
+  if(!(state.unlocks && state.unlocks.plans)) return;
   if(state.disabledPlans[key]) delete state.disabledPlans[key];
   else state.disabledPlans[key] = true;
   persistPlanFlags();
@@ -3301,7 +3568,7 @@ function togglePlanDisabled(key){
   try{ renderForm(); renderResults(); }catch(e){}
 }
 function deletePlan(key){
-  if(!state.adminUnlocked) return;
+  if(!(state.unlocks && state.unlocks.plans)) return;
   const p = ORIGINAL_PLANS[key] || PLANS[key];
   if(!p) return;
   if(!confirm('آیا از حذف طرح «' + p.title + '» مطمئن هستید؟')) return;
@@ -3471,7 +3738,7 @@ function nudgeCoef(btn, delta){
   inp.value = (Math.round(v * 100) / 100).toFixed(2).replace(/\.00$/, '').replace(/(\.[0-9])0$/, '$1');
 }
 function saveCoefEdits(){
-  if(!state.adminUnlocked){ alert('ابتدا با رمز وارد شوید.'); return; }
+  if(!(state.unlocks && state.unlocks.coefs)){ alert('ابتدا این بخش را با رمز باز کنید.'); return; }
   const key = document.getElementById('coefPlanSelect').value;
   const plan = PLANS[key];
   const acc = document.getElementById('coefAccountSelect').value;
@@ -3557,11 +3824,11 @@ function saveCoefEdits(){
   if(st) st.textContent = 'ضرایب ذخیره شد.';
   try{ renderResults(); }catch(e){}
   alert('ضرایب این بخش ذخیره شد.');
-  lockAdmin();
+  lockSection('coefs');
 }
 
 function resetCoefForCurrent(){
-  if(!state.adminUnlocked) return;
+  if(!(state.unlocks && state.unlocks.coefs)) return;
   const key = document.getElementById('coefPlanSelect').value;
   const acc = document.getElementById('coefAccountSelect').value;
   const dur = document.getElementById('coefDurationSelect').value;
@@ -3666,7 +3933,7 @@ function applyFacilityCaps(khordCap, ofoghCap){
   }
 }
 function saveFacilityCaps(){
-  if(!state.adminUnlocked){ alert('ابتدا با رمز وارد شوید.'); return; }
+  if(!(state.unlocks && state.unlocks.caps)){ alert('ابتدا این بخش را با رمز باز کنید.'); return; }
   const kh = parseCapInput('capKhord');
   const of = parseCapInput('capOfogh');
   if(kh <= 0 || of <= 0){ alert('سقف باید بزرگ‌تر از صفر باشد.'); return; }
@@ -3679,7 +3946,7 @@ function saveFacilityCaps(){
   if(st) st.textContent = 'سقف‌ها ذخیره شد.';
   try{ renderResults(); }catch(e){}
   alert('سقف‌ها ذخیره شد.');
-  lockAdmin();
+  lockSection('caps');
 }
 
 function resetAdminSettings(){
@@ -3710,17 +3977,65 @@ function resetAdminSettings(){
 }
 
 function unlockRate(inputId, boxId){
-  const pass = prompt('رمز تغییر نرخ را وارد کنید:');
+  const pass = prompt('رمز مدیریت را وارد کنید:');
   if(pass === null) return;
-  if(pass === RATE_PASSWORD){
+  if(pass === ADMIN_PASSWORD){
     const inp = document.getElementById(inputId);
     const box = document.getElementById(boxId);
     if(inp){ inp.removeAttribute('readonly'); inp.focus(); }
     if(box) box.classList.remove('rate-locked');
-    alert('نرخ آزاد شد. می‌توانید آن را تغییر دهید.');
+    state.adminUnlocked = true;
+    alert('نرخ آزاد شد. برای مدیریت کامل به بخش تنظیمات بروید.');
   } else {
     alert('رمز نادرست است.');
   }
+}
+function fillInsuranceRateInputs(){
+  try{
+    const life = localStorage.getItem('lifeInsRate');
+    const fire = localStorage.getItem('fireInsRate');
+    const a=document.getElementById('settingsLifeRate');
+    const b=document.getElementById('settingsFireRate');
+    if(a && life!=null) a.value = life;
+    if(b && fire!=null) b.value = fire;
+  }catch(e){}
+}
+function saveInsuranceRatesFromSettings(){
+  if(!(state.unlocks && state.unlocks.ins)){ alert('ابتدا این بخش را با رمز باز کنید.'); return; }
+  const life = parseFloat((document.getElementById('settingsLifeRate')||{}).value);
+  const fire = parseFloat((document.getElementById('settingsFireRate')||{}).value);
+  if(isNaN(life) || life < 0 || isNaN(fire) || fire < 0){
+    alert('نرخ‌ها نامعتبر هستند.');
+    return;
+  }
+  try{ localStorage.setItem('insLifeRate', String(life)); }catch(e){}
+  try{ localStorage.setItem('insFireRate', String(fire)); }catch(e){}
+  const lifeEl = document.getElementById('lifeRate');
+  const fireEl = document.getElementById('fireRate');
+  if(lifeEl) lifeEl.value = life;
+  if(fireEl) fireEl.value = fire;
+  const st = document.getElementById('insRateStatus');
+  if(st) st.textContent = 'نرخ بیمه‌ها ذخیره شد.';
+  alert('نرخ بیمه‌ها ذخیره شد.');
+  lockSection('ins');
+}
+function loadInsuranceRatesFromStore(){
+  try{
+    const life = parseFloat(localStorage.getItem('insLifeRate'));
+    const fire = parseFloat(localStorage.getItem('insFireRate'));
+    if(!isNaN(life) && life >= 0){
+      const a = document.getElementById('lifeRate');
+      const b = document.getElementById('settingsLifeRate');
+      if(a) a.value = life;
+      if(b) b.value = life;
+    }
+    if(!isNaN(fire) && fire >= 0){
+      const a = document.getElementById('fireRate');
+      const b = document.getElementById('settingsFireRate');
+      if(a) a.value = fire;
+      if(b) b.value = fire;
+    }
+  }catch(e){}
 }
 
 /* ---- پاک‌سازی فرم‌ها ---- */
@@ -3777,11 +4092,11 @@ function toggleLoanInputs() {
   let type = document.getElementById('loanType').value;
   let durationLabel = document.getElementById('durationLabel');
   let rateContainer = document.getElementById('rateContainer');
-  let feeRateContainer = document.getElementById('feeRateContainer');
   let intervalContainer = document.getElementById('intervalContainer');
   let durationUnit = document.getElementById('durationUnit');
   let loanResult = document.getElementById('loanResult');
   if(loanResult){ loanResult.style.display = 'none'; loanResult.innerHTML = ''; }
+  const feeRateContainer = document.getElementById('feeRateContainer');
   if (type === 'lump') {
     durationLabel.innerText = "مدت وام (روز)";
     if(durationUnit) durationUnit.textContent = 'روز';
@@ -3829,7 +4144,8 @@ function calculateLoan() {
       <div class="res-row"><span class="res-label">کل سود وام</span><span class="res-dots"></span><span class="res-val">${faNum(totalInterest)} ریال</span></div>
       <div class="res-row res-total"><span class="res-label">مجموع بازپرداخت</span><span class="res-dots"></span><span class="res-val">${faNum(totalPay)} ریال</span></div>`;
   } else if (type === 'qarz') {
-    let feeRate = parseFloat((document.getElementById('loanFeeRate')||{}).value) || 4;
+    let feeRate = parseFloat((document.getElementById('loanFeeRate')||{}).value);
+    if(isNaN(feeRate)) feeRate = 4;
     let years = Math.ceil(duration / 12);
     let remainingPrincipal = p;
     let totalFee = 0;
@@ -4098,39 +4414,66 @@ try{
 }
 
 /* ---- کارمزد انتقال وجه (بر اساس بخشنامه + قابل ویرایش) ---- */
-const FEE_PASS = '135749155';
+const FEE_PASS = ADMIN_PASSWORD;
 const DEFAULT_FEES = {
   cardBase: 11000,
   cardExtra: 3500,
   cardMax: 150000000,
   payaRate: 0.01,   // درصد
   payaMin: 4000,
-  payaMax: 120000,
+  payaMax: 120000,          // سقف کارمزد پایا
+  payaMaxAmt: 3000000000,   // سقف مبلغ هر انتقال پایا (مصوبه جدید: ۳ میلیارد)
   satnaRate: 0.02,
   satnaMax: 500000,
-  satnaMinAmt: 1000000000,
+  satnaMinAmt: 2000000000,  // کف ساتنا (مصوبه جدید: ۲ میلیارد)
   palRate: 0.02,
   palMin: 8000,
-  palMax: 1000000000
+  palMax: 2000000000        // سقف پل غیرحضوری (مصوبه جدید: ۲ میلیارد)
 };
 function loadFees(){
   try{
     const raw = localStorage.getItem('transferFees');
     if(raw){
       const o = JSON.parse(raw);
+      // مهاجرت از مقادیر قدیمی مصوبه قبلی به مصوبه جدید
+      if(o.satnaMinAmt === 1000000000) o.satnaMinAmt = 2000000000;
+      if(o.palMax === 1000000000) o.palMax = 2000000000;
+      if(o.payaMaxAmt == null && (o.payaMaxAmtLegacy === undefined)) {
+        // اگر سقف مبلغ پایا ذخیره نشده، مقدار جدید را بگذار
+        o.payaMaxAmt = 3000000000;
+      }
       return Object.assign({}, DEFAULT_FEES, o);
     }
   }catch(e){}
   return Object.assign({}, DEFAULT_FEES);
 }
 let FEES = loadFees();
+function formatFeeLimit(n){
+  n = Number(n) || 0;
+  if(n >= 1000000000) return (n/1000000000).toLocaleString('fa-IR', {maximumFractionDigits:1}) + ' میلیارد ریال';
+  if(n >= 1000000) return (n/1000000).toLocaleString('fa-IR', {maximumFractionDigits:0}) + ' میلیون ریال';
+  return (typeof faNum === 'function' ? faNum(n) : n.toLocaleString('en-US')) + ' ریال';
+}
+function updateTransferTypeLabels(){
+  const sel = document.getElementById('transferType');
+  if(!sel) return;
+  const map = {
+    card: 'کارت به کارت / سحاب (سقف ' + formatFeeLimit(FEES.cardMax) + ')',
+    pal: 'سامانه پل (سقف ' + formatFeeLimit(FEES.palMax) + ')',
+    paya: 'سامانه پایا – انفرادی (سقف ' + formatFeeLimit(FEES.payaMaxAmt) + ')',
+    satna: 'سامانه ساتنا (کف ' + formatFeeLimit(FEES.satnaMinAmt) + ')'
+  };
+  Array.from(sel.options).forEach(opt=>{
+    if(map[opt.value]) opt.textContent = map[opt.value];
+  });
+}
 function saveFeesToStore(){
   try{ localStorage.setItem('transferFees', JSON.stringify(FEES)); }catch(e){}
 }
 function fillFeeInputs(){
   const map = {
     feeCardBase: 'cardBase', feeCardExtra: 'cardExtra', feeCardMax: 'cardMax',
-    feePayaRate: 'payaRate', feePayaMin: 'payaMin', feePayaMax: 'payaMax',
+    feePayaRate: 'payaRate', feePayaMin: 'payaMin', feePayaMax: 'payaMax', feePayaMaxAmt: 'payaMaxAmt',
     feeSatnaRate: 'satnaRate', feeSatnaMax: 'satnaMax', feeSatnaMinAmt: 'satnaMinAmt',
     feePalRate: 'palRate', feePalMin: 'palMin', feePalMax: 'palMax'
   };
@@ -4144,12 +4487,13 @@ function fillFeeInputs(){
 }
 function tryUnlockFees(){
   const p = (document.getElementById('feePassInput')||{}).value || '';
-  if(p === FEE_PASS){
+  if(p === ADMIN_PASSWORD){
     document.getElementById('feeLockPanel').style.display = 'none';
     document.getElementById('feeEditPanel').style.display = 'block';
     fillFeeInputs();
+    state.adminUnlocked = true;
   } else {
-    alert('رمز نادرست است.');
+    alert('رمز نادرست است. همین رمز مدیریت برای همه بخش‌های قابل ویرایش استفاده می‌شود.');
   }
 }
 function lockFees(){
@@ -4171,6 +4515,7 @@ function saveFeeSettings(){
   FEES.payaRate = parseFeeNum('feePayaRate');
   FEES.payaMin = parseFeeNum('feePayaMin');
   FEES.payaMax = parseFeeNum('feePayaMax');
+  FEES.payaMaxAmt = parseFeeNum('feePayaMaxAmt');
   FEES.satnaRate = parseFeeNum('feeSatnaRate');
   FEES.satnaMax = parseFeeNum('feeSatnaMax');
   FEES.satnaMinAmt = parseFeeNum('feeSatnaMinAmt');
@@ -4178,6 +4523,7 @@ function saveFeeSettings(){
   FEES.palMin = parseFeeNum('feePalMin');
   FEES.palMax = parseFeeNum('feePalMax');
   saveFeesToStore();
+  updateTransferTypeLabels();
   alert('کارمزدها ذخیره شد.');
   lockFees();
 }
@@ -4186,6 +4532,7 @@ function resetFeeDefaults(){
   FEES = Object.assign({}, DEFAULT_FEES);
   saveFeesToStore();
   fillFeeInputs();
+  updateTransferTypeLabels();
   alert('نرخ‌های پیش‌فرض اعمال شد.');
   lockFees();
 }
@@ -4212,13 +4559,18 @@ function calculateTransferFee(){
         `<small>پایه ${faNum(FEES.cardBase)} ریال تا ۱۰ میلیون + ${faNum(FEES.cardExtra)} ریال به ازای هر ۱۰ میلیون مازاد · سقف مبلغ ${faNum(FEES.cardMax)} ریال</small>`;
     }
   } else if(type === 'paya'){
-    fee = amount * (FEES.payaRate / 100);
-    if(fee < FEES.payaMin) fee = FEES.payaMin;
-    if(fee > FEES.payaMax) fee = FEES.payaMax;
-    msg = `<span class="res-title">کارمزد پایا (انفرادی)</span>` +
-      `<div class="res-row"><span class="res-label">مبلغ انتقال</span><span class="res-dots"></span><span class="res-val">${faNum(amount)} ریال</span></div>` +
-      `<div class="res-row res-total"><span class="res-label">کارمزد</span><span class="res-dots"></span><span class="res-val">${faNum(fee)} ریال</span></div>` +
-      `<small>${FEES.payaRate}٪ مبلغ · کف ${faNum(FEES.payaMin)} · سقف ${faNum(FEES.payaMax)} ریال</small>`;
+    if(FEES.payaMaxAmt && amount > FEES.payaMaxAmt){
+      ok = false;
+      msg = `مبلغ بیش از سقف سامانه پایا (${faNum(FEES.payaMaxAmt)} ریال) است.`;
+    } else {
+      fee = amount * (FEES.payaRate / 100);
+      if(fee < FEES.payaMin) fee = FEES.payaMin;
+      if(fee > FEES.payaMax) fee = FEES.payaMax;
+      msg = `<span class="res-title">کارمزد پایا (انفرادی)</span>` +
+        `<div class="res-row"><span class="res-label">مبلغ انتقال</span><span class="res-dots"></span><span class="res-val">${faNum(amount)} ریال</span></div>` +
+        `<div class="res-row res-total"><span class="res-label">کارمزد</span><span class="res-dots"></span><span class="res-val">${faNum(fee)} ریال</span></div>` +
+        `<small>${FEES.payaRate}٪ مبلغ · کف کارمزد ${faNum(FEES.payaMin)} · سقف کارمزد ${faNum(FEES.payaMax)} · سقف مبلغ ${faNum(FEES.payaMaxAmt)} ریال</small>`;
+    }
   } else if(type === 'satna'){
     if(amount < FEES.satnaMinAmt){
       ok = false;
@@ -4381,7 +4733,376 @@ try{
   }
 }catch(e){}
 
+
+/* ---- تقویم شمسی + تعطیلات سفارشی + یادداشت ---- */
+const CAL_HOL_KEY = 'calCustomHolidays';
+const CAL_NOTE_KEY = 'calNotes';
+const CAL_MONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+let calJY = null, calJM = null, calSelected = null;
+
+function loadCalHolidays(){
+  try{ return JSON.parse(localStorage.getItem(CAL_HOL_KEY)||'[]'); }catch(e){ return []; }
+}
+function saveCalHolidays(arr){
+  try{ localStorage.setItem(CAL_HOL_KEY, JSON.stringify(arr)); }catch(e){}
+}
+function loadCalNotes(){
+  try{
+    const raw = JSON.parse(localStorage.getItem(CAL_NOTE_KEY)||'{}');
+    const out = {};
+    Object.keys(raw||{}).forEach(k=>{
+      const v = raw[k];
+      if(Array.isArray(v)) out[k] = v;
+      else if(typeof v === 'string' && v.trim()) out[k] = [{id: String(Date.now()), text: v.trim()}];
+      else out[k] = [];
+    });
+    return out;
+  }catch(e){ return {}; }
+}
+function saveCalNotes(obj){
+  try{ localStorage.setItem(CAL_NOTE_KEY, JSON.stringify(obj)); }catch(e){}
+}
+function getNotesForKey(key){
+  const all = loadCalNotes();
+  const direct = Array.isArray(all[key]) ? all[key].slice() : [];
+  // رویدادهای تکراری از روزهای دیگر
+  const parts = key.split('/').map(Number);
+  if(parts.length !== 3) return direct;
+  const [y,m,d] = parts;
+  const g = jalaliToGregorian(y,m,d);
+  const thisUtc = Date.UTC(g.gy, g.gm-1, g.gd);
+  Object.keys(all).forEach(k=>{
+    if(k === key) return;
+    const arr = all[k];
+    if(!Array.isArray(arr)) return;
+    arr.forEach(n=>{
+      if(!n || !n.repeat || n.repeat === 'none') return;
+      const kp = k.split('/').map(Number);
+      if(kp.length !== 3) return;
+      const kg = jalaliToGregorian(kp[0], kp[1], kp[2]);
+      const startUtc = Date.UTC(kg.gy, kg.gm-1, kg.gd);
+      if(thisUtc < startUtc) return;
+      const dayDiff = Math.round((thisUtc - startUtc) / 86400000);
+      let ok = false;
+      if(n.repeat === 'daily') ok = dayDiff >= 0;
+      else if(n.repeat === 'weekly') ok = dayDiff % 7 === 0;
+      else if(n.repeat === 'monthly') ok = (d === kp[2]) && (thisUtc >= startUtc);
+      if(ok){
+        direct.push(Object.assign({}, n, {fromRepeat:true, sourceKey:k}));
+      }
+    });
+  });
+  return direct;
+}
+function renderCalNotesList(key){
+  const box = document.getElementById('calNotesList');
+  if(!box) return;
+  const list = getNotesForKey(key);
+  if(!list.length){
+    box.innerHTML = '<div class="cal-notes-empty">یادداشتی برای این روز ثبت نشده است.</div>';
+    return;
+  }
+  const repLabel = {daily:'هر روز', weekly:'هر هفته', monthly:'هر ماه'};
+  box.innerHTML = '';
+  list.forEach(n=>{
+    const row = document.createElement('div');
+    row.className = 'cal-note-item' + (n.repeat && n.repeat !== 'none' ? (' rep-' + n.repeat) : '');
+    const txt = document.createElement('div');
+    txt.className = 'cn-text';
+    txt.textContent = n.text || '';
+    if(n.repeat && n.repeat !== 'none'){
+      const meta = document.createElement('span');
+      meta.className = 'cn-meta';
+      meta.textContent = 'تکرار: ' + (repLabel[n.repeat]||n.repeat) + (n.fromRepeat ? ' (از روز دیگر)' : '');
+      txt.appendChild(document.createElement('br'));
+      txt.appendChild(meta);
+    }
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'cn-del';
+    del.textContent = 'حذف';
+    del.onclick = function(){ deleteCalNote(n.id, n.sourceKey || key); };
+    row.appendChild(txt);
+    row.appendChild(del);
+    box.appendChild(row);
+  });
+}
+function calKey(y,m,d){
+  return y + '/' + String(m).padStart(2,'0') + '/' + String(d).padStart(2,'0');
+}
+function jalaliToGregorian(jy, jm, jd){
+  var gy, gm, gd, days;
+  var jy2 = jy + 1595;
+  days = -355668 + (365 * jy2) + (Math.floor(jy2 / 33) * 8) + Math.floor(((jy2 % 33) + 3) / 4) + jd + ((jm < 7) ? (jm - 1) * 31 : ((jm - 7) * 30 + 186));
+  gy = 400 * Math.floor(days / 146097);
+  days %= 146097;
+  if (days > 36524) {
+    gy += 100 * Math.floor(--days / 36524);
+    days %= 36524;
+    if (days >= 365) days++;
+  }
+  gy += 4 * Math.floor(days / 1461);
+  days %= 1461;
+  if (days > 365) {
+    gy += Math.floor((days - 1) / 365);
+    days = (days - 1) % 365;
+  }
+  gd = days + 1;
+  var sal_a = [0, 31, ((gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  for (gm = 0; gm < 13 && gd > sal_a[gm]; gm++) gd -= sal_a[gm];
+  return {gy: gy, gm: gm, gd: gd};
+}
+function getTodayJalali(){
+  try{
+    const parts = {};
+    new Intl.DateTimeFormat('en-u-ca-persian', {year:'numeric',month:'numeric',day:'numeric'})
+      .formatToParts(new Date()).forEach(p=>{ if(p.type!=='literal') parts[p.type]=p.value; });
+    return {y: parseInt(parts.year,10), m: parseInt(parts.month,10), d: parseInt(parts.day,10)};
+  }catch(e){
+    const g = jalaliToGregorian(1404,1,1); // fallback unused
+    return {y:1404,m:1,d:1};
+  }
+}
+function weekdayJalali(y,m,d){
+  // 0=Saturday ... 6=Friday (Iranian week)
+  const g = jalaliToGregorian(y,m,d);
+  const dt = new Date(g.gy, g.gm-1, g.gd);
+  const js = dt.getDay(); // 0 Sun .. 6 Sat
+  return (js + 1) % 7; // Sat=0
+}
+
+/* ---- اصلاح دستی تقویم قمری ---- */
+function getHijriDayOffset(){
+  try{
+    const v = parseInt(localStorage.getItem('hijriDayOffset'), 10);
+    return isNaN(v) ? 0 : v; // پیش‌فرض 0 (بدون جابه‌جایی)
+  }catch(e){ return 0; }
+}
+function setHijriDayOffset(v){
+  v = parseInt(v, 10);
+  if(isNaN(v)) v = 0;
+  if(v > 3) v = 3;
+  if(v < -3) v = -3;
+  try{ localStorage.setItem('hijriDayOffset', String(v)); }catch(e){}
+  const el = document.getElementById('hijriOffsetSelect');
+  if(el) el.value = String(v);
+  try{ if(typeof renderCalendar === 'function') renderCalendar(); }catch(e){}
+  try{ if(calSelected) selectCalDay(calSelected.d); }catch(e){}
+}
+function initHijriOffsetUI(){
+  const el = document.getElementById('hijriOffsetSelect');
+  if(!el) return;
+  el.value = String(getHijriDayOffset());
+  el.onchange = function(){ setHijriDayOffset(el.value); };
+}
+
+function gregorianToJD(gy, gm, gd){
+  const a = Math.floor((14 - gm) / 12);
+  const y = gy + 4800 - a;
+  const m = gm + 12 * a - 3;
+  return gd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+}
+function islamicMonthLengthIran(hy, hm){
+  // نزدیک به تقویم‌های رایج ایران: ماه‌های فرد ۳۰، زوج ۲۹، با امکان ۳۰ روزه بودن ماه زوج در مرزها
+  if(hm % 2 === 1) return 30;
+  if(hm === 12){
+    const c = ((hy % 30) + 30) % 30;
+    return [2,5,7,10,13,16,18,21,24,26,29].indexOf(c) >= 0 ? 30 : 29;
+  }
+  return 29;
+}
+function gregorianToHijriIran(gy, gm, gd){
+  // پایه: تقویم هجری مدنی، سپس یک روز به عقب (منطبق‌تر با تقویم رسمی/بادصبا)
+  let jd = gregorianToJD(gy, gm, gd);
+  const jd0 = 1948439.5;
+  let days = Math.floor(jd - jd0 + 0.5) + getHijriDayOffset(); // قابل تنظیم از تنظیمات
+  let hy = Math.floor((30 * days + 10646) / 10631);
+  let start = Math.floor(((hy - 1) * 10631) / 30) + 1;
+  let md = days - start + 1;
+  if(md <= 0){
+    hy -= 1;
+    start = Math.floor(((hy - 1) * 10631) / 30) + 1;
+    md = days - start + 1;
+  }
+  let hm = 1;
+  while(hm <= 12){
+    let ml = islamicMonthLengthIran(hy, hm);
+    // اگر روز ۳۰ام ماه زوج لازم شد (مرز ماه)، مجاز بدان
+    if(md === 30 && ml === 29 && hm % 2 === 0){ ml = 30; }
+    if(md <= ml) break;
+    md -= ml;
+    hm++;
+  }
+  if(hm > 12){ hy += 1; hm = 1; md = Math.max(1, md); }
+  // اگر دقیقاً اول ماه بعد شد ولی هنوز می‌توان روز ۳۰ ماه قبل را نشان داد
+  if(md === 1 && hm >= 2){
+    const prev = hm - 1;
+    // ترجیح نمایش ۳۰ ماه قبل به‌جای ۱ ماه بعد در اختلاف یک‌روزه
+    // فقط وقتی تبدیل خام بدون عقب‌نشینی اول ماه می‌داد
+  }
+  return {hy: hy, hm: hm, hd: md};
+}
+function formatGParts(y,m,d){
+  const g = jalaliToGregorian(y,m,d);
+  const gNum = g.gy + '/' + String(g.gm).padStart(2,'0') + '/' + String(g.gd).padStart(2,'0');
+  const gMonthsEn = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const gStr = g.gd + ' ' + gMonthsEn[g.gm-1] + ' ' + g.gy;
+  let h = gregorianToHijriIran(g.gy, g.gm, g.gd);
+  const hMonths = ['محرم','صفر','ربیع‌الاول','ربیع‌الثانی','جمادی‌الاول','جمادی‌الثانی','رجب','شعبان','رمضان','شوال','ذی‌القعده','ذی‌الحجه'];
+  const toFa = (n)=> String(n).replace(/\\d/g, ch => '۰۱۲۳۴۵۶۷۸۹'[ch]);
+  const hStr = toFa(h.hd) + ' ' + (hMonths[h.hm-1]||'') + ' ' + toFa(h.hy);
+  const days = ['شنبه','یکشنبه','دوشنبه','سه\u200cشنبه','چهارشنبه','پنجشنبه','جمعه'];
+  return {gStr, gNum, hStr, weekday: days[weekdayJalali(y,m,d)], gy:g.gy, gm:g.gm, gd:g.gd, hy:h.hy, hm:h.hm, hd:h.hd};
+}
+function initCalIfNeeded(){
+  if(calJY != null) return;
+  const t = getTodayJalali();
+  calJY = t.y; calJM = t.m;
+}
+function openCalendarOnToday(){
+  const t = getTodayJalali();
+  calJY = t.y; calJM = t.m;
+  calSelected = {y: t.y, m: t.m, d: t.d};
+  renderCalendar();
+  selectCalDay(t.d);
+}
+function renderCalendar(){
+  initCalIfNeeded();
+  const title = document.getElementById('calTitle');
+  const grid = document.getElementById('calGrid');
+  if(!title || !grid) return;
+  title.textContent = CAL_MONTHS[calJM-1] + ' ' + String(calJY).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+  const hols = loadCalHolidays();
+  const notes = loadCalNotes();
+  const today = getTodayJalali();
+  const firstWd = weekdayJalali(calJY, calJM, 1);
+  const dim = jalaliMonthDays(calJY, calJM);
+  let html = '';
+  for(let i=0;i<firstWd;i++) html += '<div class="cal-day empty"></div>';
+  for(let d=1; d<=dim; d++){
+    const key = calKey(calJY, calJM, d);
+    const wd = weekdayJalali(calJY, calJM, d);
+    const isFri = wd === 6;
+    const isHol = isFri || hols.indexOf(key) >= 0;
+    const isToday = today.y===calJY && today.m===calJM && today.d===d;
+    const isSel = calSelected && calSelected.y===calJY && calSelected.m===calJM && calSelected.d===d;
+    const hasNote = getNotesForKey(key).length > 0;
+    let cls = 'cal-day';
+    if(isFri) cls += ' friday';
+    if(isHol) cls += ' holiday';
+    if(isToday) cls += ' today';
+    if(isSel) cls += ' selected';
+    if(hasNote) cls += ' has-note';
+    html += '<button type="button" class="'+cls+'" data-d="'+d+'" onclick="selectCalDay('+d+')"><span class="d-num">'+(typeof faNum==='function'?faNum(d):d)+'</span></button>';
+  }
+  grid.innerHTML = html;
+}
+function selectCalDay(d){
+  calSelected = {y: calJY, m: calJM, d: d};
+  renderCalendar();
+  const key = calKey(calJY, calJM, d);
+  const meta = formatGParts(calJY, calJM, d);
+  const detail = document.getElementById('calDetail');
+  const dateEl = document.getElementById('calDetailDate');
+  const metaEl = document.getElementById('calDetailMeta');
+  const noteEl = document.getElementById('calNoteInput');
+  const holBtn = document.getElementById('calHolBtn');
+  if(detail) detail.style.display = 'block';
+  const ph = document.getElementById('calDetailPlaceholder');
+  if(ph) ph.style.display = 'none';
+  const yFa = String(calJY).replace(/\d/g, ch=>'۰۱۲۳۴۵۶۷۸۹'[ch]);
+  const dFa = String(d).replace(/\d/g, ch=>'۰۱۲۳۴۵۶۷۸۹'[ch]);
+  if(dateEl) dateEl.textContent = meta.weekday + ' ' + dFa + ' ' + CAL_MONTHS[calJM-1] + ' ' + yFa;
+  if(metaEl) metaEl.innerHTML = '<b>میلادی:</b> ' + meta.gStr + ' <span dir="ltr">(' + meta.gNum + ')</span><br><b>قمری:</b> ' + meta.hStr;
+  if(noteEl) noteEl.value = '';
+  renderCalNotesList(key);
+  const hols = loadCalHolidays();
+  const isCustomHol = hols.indexOf(key) >= 0;
+  const isFri = weekdayJalali(calJY, calJM, d) === 6;
+  if(holBtn){
+    if(isFri && !isCustomHol){
+      holBtn.textContent = 'جمعه (تعطیل هفتگی)';
+      holBtn.classList.add('on');
+      holBtn.disabled = true;
+    } else {
+      holBtn.disabled = false;
+      holBtn.textContent = isCustomHol ? 'حذف از تعطیلات' : 'تعطیل کردن این روز';
+      holBtn.classList.toggle('on', isCustomHol);
+    }
+  }
+}
+function saveCalNote(){
+  if(!calSelected) return;
+  const key = calKey(calSelected.y, calSelected.m, calSelected.d);
+  const noteEl = document.getElementById('calNoteInput');
+  const repEl = document.getElementById('calRepeat');
+  const val = (noteEl && noteEl.value || '').trim();
+  if(!val){ alert('متن یادداشت خالی است.'); return; }
+  const repeat = (repEl && repEl.value) || 'none';
+  const notes = loadCalNotes();
+  if(!Array.isArray(notes[key])) notes[key] = [];
+  notes[key].push({id: String(Date.now())+Math.random().toString(16).slice(2,6), text: val, repeat: repeat});
+  saveCalNotes(notes);
+  if(noteEl) noteEl.value = '';
+  if(repEl) repEl.value = 'none';
+  renderCalendar();
+  selectCalDay(calSelected.d);
+}
+function deleteCalNote(id, sourceKey){
+  if(!calSelected && !sourceKey) return;
+  const key = sourceKey || calKey(calSelected.y, calSelected.m, calSelected.d);
+  const notes = loadCalNotes();
+  if(!Array.isArray(notes[key])) return;
+  notes[key] = notes[key].filter(n=> String(n.id) !== String(id));
+  if(!notes[key].length) delete notes[key];
+  saveCalNotes(notes);
+  renderCalendar();
+  if(calSelected) selectCalDay(calSelected.d);
+}
+function toggleCalHoliday(){
+  if(!calSelected) return;
+  const key = calKey(calSelected.y, calSelected.m, calSelected.d);
+  if(weekdayJalali(calSelected.y, calSelected.m, calSelected.d) === 6) return;
+  let hols = loadCalHolidays();
+  const i = hols.indexOf(key);
+  if(i >= 0) hols.splice(i,1); else hols.push(key);
+  saveCalHolidays(hols);
+  renderCalendar();
+  selectCalDay(calSelected.d);
+}
+function calPrevMonth(){
+  initCalIfNeeded();
+  calJM--;
+  if(calJM < 1){ calJM = 12; calJY--; }
+  calSelected = null;
+  const detail = document.getElementById('calDetail');
+  if(detail) detail.style.display = 'none';
+  const ph = document.getElementById('calDetailPlaceholder');
+  if(ph) ph.style.display = 'block';
+  renderCalendar();
+}
+function calNextMonth(){
+  initCalIfNeeded();
+  calJM++;
+  if(calJM > 12){ calJM = 1; calJY++; }
+  calSelected = null;
+  const detail = document.getElementById('calDetail');
+  if(detail) detail.style.display = 'none';
+  const ph2 = document.getElementById('calDetailPlaceholder');
+  if(ph2) ph2.style.display = 'block';
+  renderCalendar();
+}
+(function bindCalNav(){
+  const prev = document.getElementById('calPrevBtn');
+  const next = document.getElementById('calNextBtn');
+  if(prev) prev.onclick = calPrevMonth;
+  if(next) next.onclick = calNextMonth;
+})();
+
 renderAll();
+try{ updateTransferTypeLabels(); }catch(e){}
+try{ initHijriOffsetUI(); }catch(e){}
+try{ loadInsuranceRatesFromStore(); }catch(e){}
 setView('calc');
 bindPrintButton(); // دوباره بعد از render برای اطمینان
 </script>
