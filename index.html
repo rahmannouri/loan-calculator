@@ -491,16 +491,147 @@
   :root[data-theme="dark"] .side-nav .nav-item.active{background:#ffffff !important; color:#1e3a5f !important;}
   :root[data-theme="dark"] .side-nav .nav-item.active .nav-ico{color:#1e3a5f !important;}
 
-  @media(max-width:800px){
-    body{flex-direction:column;}
+  /* ---- موبایل / WebView: منوی پایین + کشوی بیشتر ---- */
+  @media(max-width:900px){
+    body{flex-direction:column; padding-bottom:72px;}
     .side-nav{
-      width:auto; height:auto; position:static;
-      flex-direction:row; flex-wrap:wrap; padding:10px; gap:4px;
+      position:fixed !important;
+      top:auto !important; bottom:0 !important; left:0 !important; right:0 !important;
+      width:100% !important; height:auto !important;
+      flex-direction:column !important;
+      padding:0 !important; gap:0 !important;
+      z-index:200;
+      box-shadow:0 -4px 20px rgba(0,0,0,.15);
+      border-radius:16px 16px 0 0;
+      max-height:none;
+      overflow:visible;
     }
-    .side-nav .nav-head{display:none;}
-    .side-nav .nav-items{flex-direction:row; flex-wrap:wrap; gap:4px;}
-    .side-nav .nav-item{padding:9px 12px; font-size:13px; width:auto;}
-    .wrap{padding:14px 12px 30px;}
+    .side-nav .nav-head{display:none !important;}
+    .side-nav .nav-items{
+      display:flex !important;
+      flex-direction:row !important;
+      flex-wrap:nowrap !important;
+      justify-content:space-around;
+      align-items:stretch;
+      gap:0 !important;
+      padding:6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+      overflow:hidden;
+    }
+    /* فقط ۵ مورد اصلی در نوار پایین؛ بقیه در کشو */
+    .side-nav .nav-item{
+      display:none !important;
+      flex:1 1 0;
+      flex-direction:column !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:2px !important;
+      padding:6px 1px !important;
+      font-size:9px !important;
+      font-weight:600 !important;
+      width:auto !important;
+      min-width:0;
+      border-radius:10px !important;
+      background:transparent !important;
+      color:#fff !important;
+      line-height:1.2;
+      text-align:center;
+    }
+    .side-nav .nav-item .nav-ico{
+      font-size:20px !important;
+      width:auto !important;
+      line-height:1;
+    }
+    .side-nav .nav-item.active{
+      background:rgba(255,255,255,.22) !important;
+      color:#fff !important;
+    }
+    .side-nav .nav-item.active .nav-ico{color:#fff !important;}
+    /* موارد نوار پایین */
+    .side-nav .nav-item[data-view="calc"],
+    .side-nav .nav-item[data-view="loan"],
+    .side-nav .nav-item[data-view="deposit"],
+    .side-nav .nav-item[data-view="transfer"],
+    .side-nav .nav-item#moreNavBtn{
+      display:flex !important;
+    }
+    /* مخفی کردن متن طولانی — فقط آیکن + برچسب کوتاه */
+    .side-nav .nav-item .nav-label-full{display:none;}
+    .side-nav .nav-item .nav-label-short{display:block;}
+    .wrap{padding:12px 12px 88px !important;}
+  }
+  @media(min-width:901px){
+    .side-nav .nav-item .nav-label-short{display:none;}
+    .side-nav .nav-item .nav-label-full{display:inline;}
+    #moreNavBtn{display:none !important;}
+    #moreSheet, #moreSheetOverlay{display:none !important;}
+  }
+
+
+  /* نوار پایین ثابت و پایدار در موبایل و WebView */
+  @media(max-width:900px){
+    html, body{min-height:100%; overscroll-behavior-y:contain;}
+    body{padding-bottom:calc(82px + env(safe-area-inset-bottom, 0px)) !important;}
+    .side-nav{
+      position:fixed !important;
+      inset-inline:0 !important;
+      bottom:0 !important;
+      top:auto !important;
+      width:100% !important;
+      z-index:10000 !important;
+      transform:translateZ(0);
+      -webkit-transform:translateZ(0);
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
+      padding-bottom:env(safe-area-inset-bottom, 0px) !important;
+      background:linear-gradient(135deg,var(--side-from,#0b5aa3),var(--side-to,#174b78)) !important;
+      border-top:1px solid rgba(255,255,255,.18);
+      box-shadow:0 -5px 22px rgba(15,35,60,.20) !important;
+    }
+    .side-nav .nav-items{
+      min-height:62px;
+      padding-bottom:6px !important;
+      touch-action:pan-x;
+    }
+    .wrap{padding-bottom:calc(100px + env(safe-area-inset-bottom, 0px)) !important;}
+  }
+
+  /* کشوی «بیشتر» */
+  #moreSheetOverlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.45);
+    z-index:300;
+  }
+  #moreSheetOverlay.open{display:block;}
+  #moreSheet{
+    display:none; position:fixed; left:0; right:0; bottom:0;
+    background:var(--paper-2, #fff); border-radius:18px 18px 0 0;
+    z-index:310; max-height:78vh; overflow-y:auto;
+    padding:14px 14px calc(18px + env(safe-area-inset-bottom, 0px));
+    box-shadow:0 -8px 30px rgba(0,0,0,.18);
+    direction:rtl;
+  }
+  #moreSheet.open{display:block;}
+  #moreSheet .ms-title{
+    font-weight:800; font-size:15px; color:var(--navy, #0b5aa3);
+    margin:0 0 12px; text-align:center;
+  }
+  #moreSheet .ms-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;
+  }
+  #moreSheet .ms-item{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    padding:14px 8px; border-radius:14px; border:1px solid var(--line, #d0d7e2);
+    background:var(--paper, #eef2f7); cursor:pointer; font-family:inherit;
+    font-size:12px; font-weight:700; color:var(--navy-3, #1a2332);
+  }
+  #moreSheet .ms-item .ms-ico{font-size:24px; line-height:1;}
+  #moreSheet .ms-item.exit{
+    grid-column:1 / -1; flex-direction:row; justify-content:center;
+    background:#fef2f2; border-color:#fecaca; color:#b91c1c;
+  }
+  #moreSheet .ms-close{
+    display:block; width:100%; margin-top:12px; padding:12px;
+    border:0; border-radius:12px; background:var(--line, #d0d7e2);
+    font-family:inherit; font-weight:700; font-size:14px; cursor:pointer;
   }
 
   .about-body{line-height:2.1; font-size:13.5px; color:var(--navy-3);}
@@ -1045,6 +1176,9 @@
 :root[data-theme="dark"] .cal-day:hover{background:rgba(255,255,255,.04);}
 :root[data-theme="dark"] .cal-note-item{background:var(--input-bg);}
 
+
+  .side-nav .nav-item, .side-nav button{-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
+  @media(max-width:900px){.side-nav .nav-item:active{transform:scale(.97);}}
 </style>
 
 <style id="windows-pro">
@@ -1351,59 +1485,94 @@
   <div class="nav-items">
     <button type="button" class="nav-item active" data-view="calc">
       <span class="nav-ico">⭐</span>
-      امتیاز طرح‌ها
+      <span class="nav-label-full">امتیاز طرح‌ها</span>
+      <span class="nav-label-short">طرح‌ها</span>
     </button>
     <button type="button" class="nav-item" data-view="loan">
       <span class="nav-ico">💰</span>
-      سود و کارمزد
+      <span class="nav-label-full">سود و کارمزد</span>
+      <span class="nav-label-short">قسط و کارمزد</span>
     </button>
     <button type="button" class="nav-item" data-view="deposit">
       <span class="nav-ico">🏦</span>
-      سود سپرده
+      <span class="nav-label-full">سود سپرده</span>
+      <span class="nav-label-short">سپرده</span>
     </button>
     <button type="button" class="nav-item" data-view="calendar">
       <span class="nav-ico">📅</span>
-      تقویم
+      <span class="nav-label-full">تقویم</span>
+      <span class="nav-label-short">تقویم</span>
     </button>
     <button type="button" class="nav-item" data-view="datecalc">
       <span class="nav-ico">⏳</span>
-      محاسبات زمانی
+      <span class="nav-label-full">محاسبات زمانی</span>
+      <span class="nav-label-short">زمان</span>
     </button>
     <button type="button" class="nav-item" data-view="lifeins">
       <span class="nav-ico">🛡️</span>
-      بیمه عمر
+      <span class="nav-label-full">بیمه عمر</span>
+      <span class="nav-label-short">عمر</span>
     </button>
     <button type="button" class="nav-item" data-view="fireins">
       <span class="nav-ico">🔥</span>
-      بیمه حریق
+      <span class="nav-label-full">بیمه حریق</span>
+      <span class="nav-label-short">حریق</span>
     </button>
     <button type="button" class="nav-item" data-view="transfer">
       <span class="nav-ico">💸</span>
-      کارمزد انتقال
+      <span class="nav-label-full">کارمزد انتقال</span>
+      <span class="nav-label-short">انتقال</span>
     </button>
     <button type="button" class="nav-item" data-view="cardbin">
       <span class="nav-ico">💳</span>
-      کارت شتابی
+      <span class="nav-label-full">کارت شتابی</span>
+      <span class="nav-label-short">کارت</span>
     </button>
     <button type="button" class="nav-item" data-view="psp">
       <span class="nav-ico">📞</span>
-      پشتیبانی PSP
+      <span class="nav-label-full">پشتیبانی PSP</span>
+      <span class="nav-label-short">PSP</span>
     </button>
     <button type="button" class="nav-item" data-view="settings">
       <span class="nav-ico">⚙️</span>
-      تنظیمات
+      <span class="nav-label-full">تنظیمات</span>
+      <span class="nav-label-short">تنظیمات</span>
     </button>
     <button type="button" class="nav-item" data-view="about">
       <span class="nav-ico">ℹ️</span>
-      درباره برنامه
+      <span class="nav-label-full">درباره برنامه</span>
+      <span class="nav-label-short">درباره</span>
     </button>
-    <button type="button" class="nav-item" id="exitAppBtn" style="margin-top:8px;background:rgba(220,38,38,.25);color:#fff;">
-      <span class="nav-ico">🚪</span>
-      خروج از برنامه
+    <button type="button" class="nav-item" id="moreNavBtn">
+      <span class="nav-ico">☰</span>
+      <span class="nav-label-full">بیشتر</span>
+      <span class="nav-label-short">بیشتر</span>
     </button>
   </div>
 </nav>
 <div class="nav-overlay" id="navOverlay"></div>
+
+<!-- کشوی بیشتر (موبایل) -->
+<div id="moreSheetOverlay"></div>
+<div id="moreSheet" role="dialog" aria-label="منوی بیشتر">
+  <div class="ms-title">همه بخش‌ها</div>
+  <div class="ms-grid">
+    <button type="button" class="ms-item" data-view="calc"><span class="ms-ico">⭐</span>طرح‌ها</button>
+    <button type="button" class="ms-item" data-view="loan"><span class="ms-ico">💰</span>قسط و کارمزد</button>
+    <button type="button" class="ms-item" data-view="deposit"><span class="ms-ico">🏦</span>سپرده</button>
+    <button type="button" class="ms-item" data-view="calendar"><span class="ms-ico">📅</span>تقویم</button>
+    <button type="button" class="ms-item" data-view="datecalc"><span class="ms-ico">⏳</span>زمان</button>
+    <button type="button" class="ms-item" data-view="lifeins"><span class="ms-ico">🛡️</span>بیمه عمر</button>
+    <button type="button" class="ms-item" data-view="fireins"><span class="ms-ico">🔥</span>بیمه حریق</button>
+    <button type="button" class="ms-item" data-view="transfer"><span class="ms-ico">💸</span>انتقال</button>
+    <button type="button" class="ms-item" data-view="cardbin"><span class="ms-ico">💳</span>کارت</button>
+    <button type="button" class="ms-item" data-view="psp"><span class="ms-ico">📞</span>PSP</button>
+    <button type="button" class="ms-item" data-view="settings"><span class="ms-ico">⚙️</span>تنظیمات</button>
+    <button type="button" class="ms-item" data-view="about"><span class="ms-ico">ℹ️</span>درباره</button>
+    <button type="button" class="ms-item exit" id="exitAppBtn"><span class="ms-ico">🚪</span>خروج از برنامه</button>
+  </div>
+  <button type="button" class="ms-close" id="moreSheetClose">بستن</button>
+</div>
 
 <div class="wrap">
 
@@ -1419,17 +1588,21 @@
     <section class="panel">
       <div class="panel-head"><span class="idx">۲</span>مشخصات محاسبه</div>
       <div class="panel-body" id="formBody"></div>
-      <div class="panel-body print-bar">
-        <button type="button" class="print-btn" id="printBtn">
-          <span class="pb-ico">📤</span>
-          اشتراک‌گذاری نتیجه
-        </button>
-      </div>
     </section>
 
     <section class="panel">
       <div class="panel-head"><span class="idx">۳</span>نتیجه محاسبه</div>
       <div class="panel-body" id="resultsBody"></div>
+      <div class="panel-body print-bar" id="shareBar" style="display:none;">
+        <button type="button" class="print-btn" id="printBtn">
+          <span class="pb-ico">📤</span>
+          اشتراک‌گذاری نتیجه
+        </button>
+        <button type="button" class="print-btn" id="smsShareBtn" style="margin-top:8px;background:linear-gradient(135deg,#0f766e,#0d9488) !important;">
+          <span class="pb-ico">✉️</span>
+          ارسال مستقیم با پیامک
+        </button>
+      </div>
     </section>
 
   </div>
@@ -2826,6 +2999,10 @@ function renderResults(){
 
   if(!amount || amount<=0){
     el.innerHTML = `<div class="empty-note">برای مشاهده سقف تسهیلات، مبلغ را وارد کنید.</div>`;
+    try{
+      const sb = document.getElementById('shareBar');
+      if(sb) sb.style.display = 'none';
+    }catch(e){}
     return;
   }
 
@@ -3001,6 +3178,17 @@ function renderResults(){
   }
 
   el.innerHTML = html;
+  try{
+    const sb = document.getElementById('shareBar');
+    if(sb) sb.style.display = 'flex';
+    // اتصال مجدد دکمه اشتراک‌گذاری بعد از هر رندر
+    if(typeof bindPrintButton === 'function') bindPrintButton();
+function bindSmsShareButton(){
+  var btn = document.getElementById('smsShareBtn');
+  if(btn) btn.onclick = function(e){ e.preventDefault(); shareBySms(); };
+}
+bindSmsShareButton();
+  }catch(e){}
 }
 
 function renderAll(){
@@ -3048,6 +3236,17 @@ function setView(view){
   document.querySelectorAll('.nav-item').forEach(btn=>{
     btn.classList.toggle('active', btn.dataset.view === view);
   });
+  try{
+    document.querySelectorAll('#moreSheet .ms-item[data-view]').forEach(function(btn){
+      btn.style.outline = (btn.getAttribute('data-view') === view) ? '2px solid var(--accent,#0b5aa3)' : '';
+    });
+  }catch(e){}
+  try{
+    var o = document.getElementById('moreSheetOverlay');
+    var s = document.getElementById('moreSheet');
+    if(o) o.classList.remove('open');
+    if(s) s.classList.remove('open');
+  }catch(e){}
   closeNav();
   if(view === 'calendar'){ try{ openCalendarOnToday(); }catch(e){} }
   if(view === 'calc'){
@@ -3122,45 +3321,74 @@ document.querySelectorAll('[data-topview]').forEach(btn=>{
   btn.addEventListener('click', ()=> setView(btn.dataset.topview));
 });
 function exitApp(){
-  // Android WebView / Cordova / Capacitor / custom bridges
-  try{
-    if(typeof Android !== 'undefined' && Android && typeof Android.exitApp === 'function'){
-      Android.exitApp();
-      return;
-    }
-  }catch(e){}
-  try{
-    if(window.Android && typeof window.Android.exitApp === 'function'){
-      window.Android.exitApp();
-      return;
-    }
-  }catch(e){}
-  try{
-    if(typeof navigator !== 'undefined' && navigator.app && typeof navigator.app.exitApp === 'function'){
-      navigator.app.exitApp();
-      return;
-    }
-  }catch(e){}
-  try{
-    if(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App){
-      window.Capacitor.Plugins.App.exitApp();
-      return;
-    }
-  }catch(e){}
-  try{
-    if(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.exitApp){
-      window.webkit.messageHandlers.exitApp.postMessage(null);
-      return;
-    }
-  }catch(e){}
-  // Fallback: close window / tab
-  try{ window.close(); }catch(e){}
-  setTimeout(function(){
-    try{ window.open('','_self'); window.close(); }catch(e){}
-    try{ history.back(); }catch(e){}
-  }, 120);
-  alert('برای خروج کامل از برنامه، دکمه بازگشت (Back) گوشی را بزنید یا برنامه را از لیست اخیر ببندید.');
+  // خروج واقعی فقط در صورتی ممکن است که WebIntoApp/پوسته اندروید پل خروج را ارائه کند.
+  var bridges = [
+    function(){ if(window.Android && typeof window.Android.exitApp === 'function'){ window.Android.exitApp(); return true; } },
+    function(){ if(window.Android && typeof window.Android.closeApp === 'function'){ window.Android.closeApp(); return true; } },
+    function(){ if(window.AndroidInterface && typeof window.AndroidInterface.exitApp === 'function'){ window.AndroidInterface.exitApp(); return true; } },
+    function(){ if(window.JSBridge && typeof window.JSBridge.exitApp === 'function'){ window.JSBridge.exitApp(); return true; } },
+    function(){ if(window.WebIntoApp && typeof window.WebIntoApp.exitApp === 'function'){ window.WebIntoApp.exitApp(); return true; } },
+    function(){ if(window.webintoapp && typeof window.webintoapp.exit === 'function'){ window.webintoapp.exit(); return true; } },
+    function(){ if(navigator.app && typeof navigator.app.exitApp === 'function'){ navigator.app.exitApp(); return true; } },
+    function(){ if(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App && typeof window.Capacitor.Plugins.App.exitApp === 'function'){ window.Capacitor.Plugins.App.exitApp(); return true; } }
+  ];
+  for(var i=0;i<bridges.length;i++){
+    try{ if(bridges[i]() === true) return; }catch(e){}
+  }
+  // پنجره مرورگر معمولاً اجازه بستن خودش را نمی‌دهد؛ صفحه را خراب یا خالی نمی‌کنیم.
+  var old = document.getElementById('exitHelpDialog');
+  if(old) old.remove();
+  var dlg = document.createElement('div');
+  dlg.id = 'exitHelpDialog';
+  dlg.style.cssText = 'position:fixed;inset:0;z-index:20000;background:rgba(5,18,35,.58);display:flex;align-items:center;justify-content:center;padding:20px;direction:rtl;';
+  dlg.innerHTML = '<div style="width:100%;max-width:360px;background:var(--paper-2,#fff);color:var(--navy-3,#172b40);border-radius:18px;padding:20px;box-shadow:0 15px 50px #0004;text-align:center;font-family:inherit;">' +
+    '<div style="font-size:30px;margin-bottom:8px">🚪</div><div style="font-weight:900;font-size:16px;margin-bottom:8px">خروج از ابزارهای بانکی</div>' +
+    '<div style="font-size:13px;line-height:2;margin-bottom:16px">نسخه WebView اجازه بستن مستقیم برنامه را نمی‌دهد. برای خروج، از دکمه بازگشت گوشی استفاده کنید یا برنامه را از صفحه برنامه‌های اخیر ببندید.</div>' +
+    '<button type="button" id="exitHelpOk" style="border:0;border-radius:11px;padding:11px 24px;background:var(--accent,#0b5aa3);color:#fff;font:700 14px inherit">متوجه شدم</button></div>';
+  document.body.appendChild(dlg);
+  document.getElementById('exitHelpOk').onclick = function(){ dlg.remove(); };
+  dlg.addEventListener('click',function(e){if(e.target===dlg) dlg.remove();});
 }
+
+/* ---- دکمه بازگشت اندروید: دوبار Back = خروج ---- */
+(function setupAndroidBackExit(){
+  var lastBack = 0;
+  // یک state اضافه کن تا Back داخل WebView گیر کند
+  try{ history.pushState({appRoot:1}, ''); }catch(e){}
+  window.addEventListener('popstate', function(e){
+    try{ history.pushState({appRoot:1}, ''); }catch(err){}
+    // اگر منوی بیشتر باز است، فقط ببند
+    try{
+      var s = document.getElementById('moreSheet');
+      if(s && s.classList.contains('open')){
+        var o = document.getElementById('moreSheetOverlay');
+        if(o) o.classList.remove('open');
+        s.classList.remove('open');
+        return;
+      }
+    }catch(err){}
+    var now = Date.now();
+    if(now - lastBack < 2000){
+      exitApp();
+    } else {
+      lastBack = now;
+      try{
+        // toast ساده
+        var t = document.getElementById('backToast');
+        if(!t){
+          t = document.createElement('div');
+          t.id = 'backToast';
+          t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.78);color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;z-index:9999;pointer-events:none;font-family:inherit;';
+          document.body.appendChild(t);
+        }
+        t.textContent = 'برای خروج دوباره دکمه بازگشت را بزنید';
+        t.style.display = 'block';
+        clearTimeout(t._tm);
+        t._tm = setTimeout(function(){ t.style.display = 'none'; }, 1800);
+      }catch(err){}
+    }
+  });
+})();
 
 /* ---------------- تاریخ شمسی / میلادی / قمری ---------------- */
 function renderDates(){
@@ -3435,30 +3663,50 @@ function doShare(){
     return;
   }
   const title = 'نتیجه محاسبه تسهیلات';
+  // در مرورگرهای دارای Web Share، کاربر برنامه مقصد (پیامک، روبیکا، واتساپ و...) را انتخاب می‌کند.
   if(navigator.share){
-    navigator.share({ title: title, text: text })
-      .then(function(){})
-      .catch(function(err){
-        // کاربر ممکن است share را لغو کند — خطا نیست
-        if(err && err.name === 'AbortError') return;
-        fallbackShare(text);
-      });
-  } else {
-    fallbackShare(text);
+    try{
+      navigator.share({title:title, text:text})
+        .catch(function(err){
+          if(err && err.name === 'AbortError') return;
+          fallbackShare(text);
+        });
+      return;
+    }catch(e){}
   }
+  // Android WebView: درخواست باز شدن انتخاب‌گر اشتراک‌گذاری سیستم.
+  try{
+    var intent = 'intent:#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.SUBJECT=' +
+      encodeURIComponent(title) + ';S.android.intent.extra.TEXT=' + encodeURIComponent(text) + ';end';
+    window.location.href = intent;
+    setTimeout(function(){
+      if(document.visibilityState === 'visible') showShareTextBox(text);
+    },900);
+    return;
+  }catch(e){}
+  fallbackShare(text);
 }
 
 function fallbackShare(text){
-  // کپی به کلیپ‌بورد + راهنما
+  showShareTextBox(text);
+}
+
+function shareBySms(){
+  var text = buildShareText();
+  if(!text){ alert('ابتدا مبلغ را وارد کنید تا نتیجه قابل ارسال باشد.'); return; }
+  var body = encodeURIComponent(text);
+  // sms: روی اندروید و iOS برنامه پیامک را با متن آماده باز می‌کند.
+  window.location.href = 'sms:?body=' + body;
+}
+
+function copyShareText(text){
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(function(){
-      alert('متن نتیجه در حافظه کپی شد.\nمی‌توانید آن را در پیامک، واتساپ، تلگرام و ... جای‌گذاری (Paste) کنید.');
-    }).catch(function(){
-      showShareTextBox(text);
-    });
-  } else {
-    showShareTextBox(text);
+      alert('نتیجه کپی شد؛ اکنون آن را در روبیکا، پیامک یا هر برنامه دیگری جای‌گذاری کنید.');
+    }).catch(function(){ showShareTextBox(text); });
+    return;
   }
+  showShareTextBox(text);
 }
 
 function showShareTextBox(text){
@@ -3472,6 +3720,7 @@ function showShareTextBox(text){
     '<textarea id="shareTextArea" readonly style="width:100%;height:220px;font-size:13px;padding:10px;border:1px solid #cbd5e1;border-radius:10px;direction:rtl;resize:vertical;"></textarea>' +
     '<div style="display:flex;gap:8px;margin-top:12px;">' +
     '<button type="button" class="print-btn" style="flex:1;margin:0;" id="shareCopyBtn">کپی متن</button>' +
+    '<button type="button" class="print-btn" style="flex:1;margin:0;background:linear-gradient(135deg,#0f766e,#0d9488) !important;" id="shareSmsBtn">پیامک</button>' +
     '<button type="button" class="print-btn" style="flex:1;margin:0;background:linear-gradient(135deg,#64748b,#475569) !important;" id="shareCloseBtn">بستن</button>' +
     '</div></div>';
   document.body.appendChild(box);
@@ -3487,6 +3736,9 @@ function showShareTextBox(text){
     }catch(e){
       alert('لطفاً متن را دستی انتخاب و کپی کنید.');
     }
+  };
+  document.getElementById('shareSmsBtn').onclick = function(){
+    window.location.href = 'sms:?body=' + encodeURIComponent(text);
   };
   document.getElementById('shareCloseBtn').onclick = function(){ box.remove(); };
   box.addEventListener('click', function(e){ if(e.target === box) box.remove(); });
@@ -3506,13 +3758,45 @@ function bindPrintButton(){
 }
 bindPrintButton();
 
-// دکمه خروج در منو
+// منوی بیشتر + خروج (موبایل)
 (function(){
-  const exitBtn = document.getElementById('exitAppBtn');
+  function openMore(){
+    var o = document.getElementById('moreSheetOverlay');
+    var s = document.getElementById('moreSheet');
+    if(o) o.classList.add('open');
+    if(s) s.classList.add('open');
+  }
+  function closeMore(){
+    var o = document.getElementById('moreSheetOverlay');
+    var s = document.getElementById('moreSheet');
+    if(o) o.classList.remove('open');
+    if(s) s.classList.remove('open');
+  }
+  var moreBtn = document.getElementById('moreNavBtn');
+  if(moreBtn){
+    moreBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      openMore();
+    });
+  }
+  var closeBtn = document.getElementById('moreSheetClose');
+  if(closeBtn) closeBtn.addEventListener('click', closeMore);
+  var overlay = document.getElementById('moreSheetOverlay');
+  if(overlay) overlay.addEventListener('click', closeMore);
+  document.querySelectorAll('#moreSheet .ms-item[data-view]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var v = btn.getAttribute('data-view');
+      closeMore();
+      if(v && typeof setView === 'function') setView(v);
+    });
+  });
+  var exitBtn = document.getElementById('exitAppBtn');
   if(exitBtn){
     exitBtn.addEventListener('click', function(e){
       e.preventDefault();
       e.stopPropagation();
+      closeMore();
       if(confirm('آیا می‌خواهید از برنامه خارج شوید؟')){
         exitApp();
       }
